@@ -9,7 +9,8 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Shuttle.Management</RootNamespace>
     <AssemblyName>Shuttle.Management</AssemblyName>
-    <TargetFrameworkProfile></TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -96,9 +97,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="release.config">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
