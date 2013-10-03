@@ -3,7 +3,7 @@
 
    <PropertyGroup>
       <Framework Condition="'$(Framework)' == ''">net35-full</Framework>
-      <DeploymentFolder>..\deployment\$(Framework)\</DeploymentFolder>
+      <DeploymentFolder>..\deployment\shuttle-management-$(Framework)\</DeploymentFolder>
    </PropertyGroup>
 
    <ItemGroup>
