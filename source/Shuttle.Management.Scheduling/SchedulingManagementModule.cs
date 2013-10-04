@@ -37,7 +37,7 @@ namespace Shuttle.Management.Scheduling
 
             container.RegisterDataAccess("Shuttle.Scheduling");
 
-            container.RegisterSingleton<IScheduleManagementPresenter, IScheduleManagementPresenter>();
+            container.RegisterSingleton<IScheduleManagementPresenter, ScheduleManagementPresenter>();
         }
 
         public IEnumerable<IManagementModulePresenter> Presenters
