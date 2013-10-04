@@ -22,6 +22,8 @@ namespace Shuttle.Management.Shell
 			{
 				queues = new XmlQueueCollection();
 
+			    Directory.CreateDirectory(Path.GetDirectoryName(queueRepositoryPath));
+
 				File.WriteAllText(queueRepositoryPath, serializer.Serialize(queues));
 
 				return;

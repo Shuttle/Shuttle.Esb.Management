@@ -40,7 +40,6 @@ namespace Shuttle.Management.Subscriptions
 
             container.RegisterDataAccess("Shuttle.Management.Subscriptions");
 
-            container.RegisterSingleton<ISubscriptionRequestManagementPresenter, SubscriptionRequestManagementPresenter>();
             container.RegisterSingleton<ISubscriptionManagementPresenter, SubscriptionManagementPresenter>();
         }
 

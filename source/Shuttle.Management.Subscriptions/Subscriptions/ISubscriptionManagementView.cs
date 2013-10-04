@@ -17,7 +17,7 @@ namespace Shuttle.Management.Subscriptions
 		void InvertSubscriptionChecks();
 		string DataStoreValue { get; }
 		void PopulateDataStores(IEnumerable<DataStore> list);
-		void PopulateEventMessageTypes(IEnumerable<Type> list);
+		void PopulateEventTypes(IEnumerable<Type> list);
 		void CheckAllEventMessageTypes();
 		void InvertEventMessageTypeChecks();
 		void GetAssemblyFileName();

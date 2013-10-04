@@ -22,6 +22,8 @@ namespace Shuttle.Management.Shell
             {
                 dataStores = new XmlDataStoreCollection();
 
+                Directory.CreateDirectory(Path.GetDirectoryName(dataStoreRepositoryPath));
+
                 File.WriteAllText(dataStoreRepositoryPath, serializer.Serialize(dataStores));
 
                 return;

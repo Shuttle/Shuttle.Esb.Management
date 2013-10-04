@@ -15,5 +15,6 @@ namespace Shuttle.Management.Subscriptions
 		void CheckAllEventMessageTypes();
 		void InvertEventMessageTypeChecks();
 	    void GetAssemblyEventMessageTypes();
+	    void ShowAssemblyTypes(string fileName);
 	}
 }

@@ -92,26 +92,12 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="DataAccess\MappedColumns\SubscriptionColumns.cs" />
-    <Compile Include="DataAccess\MappedColumns\SubscriptionRequestColumns.cs" />
     <Compile Include="DataAccess\Queries\Definitions\SubscriptionQueries.cs" />
-    <Compile Include="DataAccess\Queries\Definitions\SubscriptionRequestQueries.cs" />
     <Compile Include="DataAccess\Queries\ISubscriptionQuery.cs" />
-    <Compile Include="DataAccess\Queries\ISubscriptionRequestQuery.cs" />
     <Compile Include="DataAccess\Queries\SubscriptionQuery.cs" />
-    <Compile Include="DataAccess\Queries\SubscriptionRequestQuery.cs" />
-    <Compile Include="DataAccess\TableAccess\SubscriptionRequestTableAccess.cs" />
     <Compile Include="DataAccess\TableAccess\SubscriptionTableAccess.cs" />
     <Compile Include="SubscriptionsManagementModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SubscriptionRequests\ISubscriptionRequestManagementPresenter.cs" />
-    <Compile Include="SubscriptionRequests\ISubscriptionRequestManagementView.cs" />
-    <Compile Include="SubscriptionRequests\SubscriptionRequestManagementPresenter.cs" />
-    <Compile Include="SubscriptionRequests\SubscriptionRequestManagementView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="SubscriptionRequests\SubscriptionRequestManagementView.Designer.cs">
-      <DependentUpon>SubscriptionRequestManagementView.cs</DependentUpon>
-    </Compile>
     <Compile Include="SubscriptionResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -128,9 +114,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="SubscriptionRequests\SubscriptionRequestManagementView.resx">
-      <DependentUpon>SubscriptionRequestManagementView.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="SubscriptionResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>SubscriptionResources.Designer.cs</LastGenOutput>

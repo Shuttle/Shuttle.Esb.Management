@@ -41,7 +41,7 @@ namespace Shuttle.Management.Subscriptions
 			                                  delegate { presenter.CheckAllEventMessageTypes(); });
 			EventMessageTypeToolStrip.AddItem(ManagementResources.Text_InvertChecks,
 			                                  delegate { presenter.InvertEventMessageTypeChecks(); });
-			EventMessageTypeToolStrip.AddItem(SubscriptionResources.Text_GetAssemblyEventMessageTypes,
+			EventMessageTypeToolStrip.AddItem(SubscriptionResources.Text_GetAssemblyTypes,
 			                                  ManagementResources.Image_DriveMagnify,
 			                                  delegate { presenter.GetAssemblyEventMessageTypes(); });
 		}
@@ -200,7 +200,7 @@ namespace Shuttle.Management.Subscriptions
 					});
 		}
 
-		public void PopulateEventMessageTypes(IEnumerable<Type> list)
+		public void PopulateEventTypes(IEnumerable<Type> list)
 		{
 			this.Invoke(
 				() =>
@@ -244,6 +244,8 @@ namespace Shuttle.Management.Subscriptions
 			{
 				return;
 			}
+
+            presenter.ShowAssemblyTypes(ofd.FileName);
 		}
 
 		private void DataStore_SelectedIndexChanged(object sender, EventArgs e)

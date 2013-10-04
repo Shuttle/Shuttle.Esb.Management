@@ -16,16 +16,23 @@ namespace Shuttle.Management.Subscriptions
         private readonly IDatabaseGateway databaseGateway;
         private readonly IDatabaseConnectionFactory databaseConnectionFactory;
         private readonly ISubscriptionQuery subscriptionQuery;
+        private readonly IReflectionService reflectionService;
 
         private readonly ISubscriptionManagementView view;
 
-        public SubscriptionManagementPresenter(IDatabaseGateway databaseGateway, IDatabaseConnectionFactory databaseConnectionFactory, ISubscriptionQuery subscriptionQuery)
+        public SubscriptionManagementPresenter(IDatabaseGateway databaseGateway, IDatabaseConnectionFactory databaseConnectionFactory, ISubscriptionQuery subscriptionQuery, IReflectionService reflectionService)
         {
             view = new SubscriptionManagementView(this);
+
+            Guard.AgainstNull(databaseGateway, "databaseGateway");
+            Guard.AgainstNull(databaseConnectionFactory, "databaseConnectionFactory");
+            Guard.AgainstNull(subscriptionQuery, "subscriptionQuery");
+            Guard.AgainstNull(reflectionService, "reflectionService");
 
             this.databaseGateway = databaseGateway;
             this.databaseConnectionFactory = databaseConnectionFactory;
             this.subscriptionQuery = subscriptionQuery;
+            this.reflectionService = reflectionService;
         }
 
         public void CheckAllSubscriptions()
@@ -119,10 +126,6 @@ namespace Shuttle.Management.Subscriptions
                           {
                               foreach (var messageType in view.SelectedMessageTypes)
                               {
-                                  databaseGateway.ExecuteUsing(
-                                      connectionName,
-                                      SubscriptionRequestTableAccess.Remove(inboxWorkQueueUri, messageType));
-
                                   if (databaseGateway.GetScalarUsing<int>(
                                       connectionName,
                                       SubscriptionTableAccess.Exists(inboxWorkQueueUri, messageType)) != 0)
@@ -153,6 +156,14 @@ namespace Shuttle.Management.Subscriptions
         public void GetAssemblyEventMessageTypes()
         {
             view.GetAssemblyFileName();
+        }
+
+        public void ShowAssemblyTypes(string fileName)
+        {
+            QueueTask("ShowAssemblyTypes",
+                      () =>
+                      view.PopulateEventTypes(
+                        reflectionService.GetTypes(reflectionService.GetAssembly(fileName))));
         }
 
         public void RefreshSubscribers()
