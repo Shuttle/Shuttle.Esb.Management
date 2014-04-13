@@ -52,22 +52,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net">
-      <HintPath>..\..\external-bin\log4net\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="Shuttle.Core.Data">
-      <HintPath>..\..\external-bin\shuttle.core\$(Framework)\Shuttle.Core.Data.dll</HintPath>
+      <HintPath>..\packages\log4net.2.0.3\lib\net35-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Shuttle.Core.Domain">
-      <HintPath>..\..\external-bin\shuttle.core\$(Framework)\Shuttle.Core.Domain.dll</HintPath>
+      <HintPath>..\packages\shuttle-core-domain.3.0.0.0\lib\net35-full\Shuttle.Core.Domain.dll</HintPath>
     </Reference>
     <Reference Include="Shuttle.Core.Infrastructure">
-      <HintPath>..\..\external-bin\shuttle.core\$(Framework)\Shuttle.Core.Infrastructure.dll</HintPath>
+      <HintPath>..\packages\shuttle-core-infrastructure.3.0.0.0\lib\net35-full\Shuttle.Core.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="Shuttle.Core.Infrastructure.Log4Net">
-      <HintPath>..\..\external-bin\shuttle.core\$(Framework)\Shuttle.Core.Infrastructure.Log4Net.dll</HintPath>
-    </Reference>
-    <Reference Include="Shuttle.Core.SqlServer">
-      <HintPath>..\..\external-bin\shuttle.core\$(Framework)\Shuttle.Core.SqlServer.dll</HintPath>
+      <HintPath>..\packages\shuttle-core-infrastructure-log4net.3.0.0.0\lib\net35-full\Shuttle.Core.Infrastructure.Log4Net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -99,6 +93,7 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Shuttle.Management.Shell\Shuttle.Management.Shell.csproj">

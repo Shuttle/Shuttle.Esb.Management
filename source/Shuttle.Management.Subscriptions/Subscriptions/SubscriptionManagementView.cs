@@ -71,20 +71,17 @@ namespace Shuttle.Management.Subscriptions
 			get { return DataStore.Text; }
 		}
 
-		public void AddSubscription(string messageType, string acceptedBy, DateTime acceptedDate)
+		public void AddSubscription(string messageType)
 		{
 			this.Invoke(() =>
-			            	{
-			            		if (SubscriptionAlreadyPopulated(messageType))
+				{
+					if (SubscriptionAlreadyPopulated(messageType))
 			            		{
 			            			return;
 			            		}
 
-			            		var item = SubscriptionList.Items.Add(messageType);
-
-			            		item.SubItems.Add(acceptedBy);
-			            		item.SubItems.Add(acceptedDate.ToString(ManagementResources.FormatDateTime));
-			            	});
+					SubscriptionList.Items.Add(messageType);
+				});
 		}
 
 		private bool SubscriptionAlreadyPopulated(string messageType)

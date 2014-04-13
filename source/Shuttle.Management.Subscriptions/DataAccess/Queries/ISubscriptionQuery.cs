@@ -7,7 +7,10 @@ namespace Shuttle.Management.Subscriptions
     {
         DataTable All(DataSource source);
 		DataTable AllUris(DataSource source);
-		DataTable MessageTypes(DataSource source, string uri);
+		DataTable MessageTypes(DataSource source, string inboxWorkQueueUri);
 		bool HasSubscriptionStructures(DataSource source);
-	}
+	    void Remove(DataSource source, string inboxWorkQueueUri, string messageType);
+	    bool Contains(DataSource source, string inboxWorkQueueUri, string messageType);
+	    void Add(DataSource source, string inboxWorkQueueUri, string messageType);
+    }
 }

@@ -5,13 +5,7 @@ namespace Shuttle.Management.Shell
 {
 	public class SqlQueueRepository : IQueueRepository
 	{
-		private static readonly DataSource DataSource = new DataSource("SqlQueueRepository",
-		                                                               new SqlServerDbDataParameterFactory(),
-		                                                               new SqlServerContainsQueryFactory(),
-		                                                               new SqlServerInsertQueryFactory(),
-		                                                               new SqlServerUpdateQueryFactory(),
-		                                                               new SqlServerDeleteQueryFactory(),
-		                                                               new SqlServerSelectQueryFactory());
+		private static readonly DataSource DataSource = new DataSource("SqlQueueRepository", new SqlDbDataParameterFactory());
 
 		private readonly IDatabaseConnectionFactory databaseConnectionFactory;
 		private readonly IDatabaseGateway databaseGateway;

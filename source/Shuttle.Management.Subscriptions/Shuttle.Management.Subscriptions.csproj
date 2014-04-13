@@ -46,37 +46,31 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Castle.Core">
-      <HintPath>..\..\external-bin\castle\Castle.Core.dll</HintPath>
+      <HintPath>..\packages\Castle.Core.3.2.2\lib\net35\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Windsor">
-      <HintPath>..\..\external-bin\castle\Castle.Windsor.dll</HintPath>
+      <HintPath>..\packages\Castle.Windsor.3.2.1\lib\net35\Castle.Windsor.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>..\..\external-bin\log4net\log4net.dll</HintPath>
+      <HintPath>..\packages\log4net.2.0.3\lib\net35-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Shuttle.Core.Data">
-      <HintPath>..\..\external-bin\shuttle.core\$(Framework)\Shuttle.Core.Data.dll</HintPath>
+      <HintPath>..\packages\shuttle-core-data.3.0.0.0\lib\net35-full\Shuttle.Core.Data.dll</HintPath>
     </Reference>
     <Reference Include="Shuttle.Core.Data.Castle">
-      <HintPath>..\..\external-bin\shuttle.core\$(Framework)\Shuttle.Core.Data.Castle.dll</HintPath>
+      <HintPath>..\packages\shuttle-core-data-castle.3.0.1.0\lib\net35-full\Shuttle.Core.Data.Castle.dll</HintPath>
     </Reference>
     <Reference Include="Shuttle.Core.Domain">
-      <HintPath>..\..\external-bin\shuttle.core\$(Framework)\Shuttle.Core.Domain.dll</HintPath>
+      <HintPath>..\packages\shuttle-core-domain.3.0.0.0\lib\net35-full\Shuttle.Core.Domain.dll</HintPath>
     </Reference>
     <Reference Include="Shuttle.Core.Infrastructure">
-      <HintPath>..\..\external-bin\shuttle.core\$(Framework)\Shuttle.Core.Infrastructure.dll</HintPath>
-    </Reference>
-    <Reference Include="Shuttle.Core.Infrastructure.Castle">
-      <HintPath>..\..\external-bin\shuttle.core\$(Framework)\Shuttle.Core.Infrastructure.Castle.dll</HintPath>
+      <HintPath>..\packages\shuttle-core-infrastructure.3.0.0.0\lib\net35-full\Shuttle.Core.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="Shuttle.Core.Infrastructure.Log4Net">
-      <HintPath>..\..\external-bin\shuttle.core\$(Framework)\Shuttle.Core.Infrastructure.Log4Net.dll</HintPath>
-    </Reference>
-    <Reference Include="Shuttle.Core.SqlServer">
-      <HintPath>..\..\external-bin\shuttle.core\$(Framework)\Shuttle.Core.SqlServer.dll</HintPath>
+      <HintPath>..\packages\shuttle-core-infrastructure-log4net.3.0.0.0\lib\net35-full\Shuttle.Core.Infrastructure.Log4Net.dll</HintPath>
     </Reference>
     <Reference Include="Shuttle.ESB.Core">
-      <HintPath>..\..\external-bin\shuttle.esb\$(Framework)\Shuttle.ESB.Core.dll</HintPath>
+      <HintPath>..\packages\shuttle-esb-core.3.0.0-rc1\lib\net35-full\Shuttle.ESB.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -92,10 +86,10 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="DataAccess\MappedColumns\SubscriptionColumns.cs" />
-    <Compile Include="DataAccess\Queries\Definitions\SubscriptionQueries.cs" />
     <Compile Include="DataAccess\Queries\ISubscriptionQuery.cs" />
+    <Compile Include="DataAccess\Queries\ISubscriptionQueryFactory.cs" />
     <Compile Include="DataAccess\Queries\SubscriptionQuery.cs" />
-    <Compile Include="DataAccess\TableAccess\SubscriptionTableAccess.cs" />
+    <Compile Include="DataAccess\Queries\SubscriptionQueryFactory.cs" />
     <Compile Include="SubscriptionsManagementModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SubscriptionResources.Designer.cs">
@@ -137,6 +131,7 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="packages.config" />
     <None Include="Resources\transmit_blue.png" />
   </ItemGroup>
   <ItemGroup>

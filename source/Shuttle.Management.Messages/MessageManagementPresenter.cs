@@ -21,7 +21,7 @@ namespace Shuttle.Management.Messages
         {
             view = new MessageManagementView(this);
 
-            queueManager = new QueueManager();
+			queueManager = QueueManager.Default();
 
             messageConfiguration = new MessageConfiguration();
 
@@ -96,7 +96,8 @@ namespace Shuttle.Management.Messages
 
                               foreach (var message in view.SelectedMessages)
                               {
-                                  queue.Remove(message.MessageId);
+                                  queue.GetMessage();
+	                              queue.Acknowledge(message.MessageId);
                               }
                           });
 
@@ -118,32 +119,34 @@ namespace Shuttle.Management.Messages
             QueueTask("Move",
                       () =>
                           {
-                              var source = queueManager.GetQueue(sourceQueueUriValue);
-                              var destination = queueManager.GetQueue(destinationQueueUriValue);
+							  // TODO: FIX
 
-                              foreach (var message in view.SelectedMessages)
-                              {
-                                  using (var scope = new TransactionScope())
-                                  {
-                                      if (source.Remove(message.MessageId))
-                                      {
-                                          Log.Information(string.Format(MessageResources.RemovedMessage,
-                                                                        message.MessageId, sourceQueueUriValue));
+							  //var source = queueManager.GetQueue(sourceQueueUriValue);
+							  //var destination = queueManager.GetQueue(destinationQueueUriValue);
 
-                                          destination.Enqueue(message.MessageId, serializer.Serialize(message));
+							  //foreach (var message in view.SelectedMessages)
+							  //{
+							  //	using (var scope = new TransactionScope())
+							  //	{
+							  //		if (source.Remove(message.MessageId))
+							  //		{
+							  //			Log.Information(string.Format(MessageResources.RemovedMessage,
+							  //										  message.MessageId, sourceQueueUriValue));
 
-                                          Log.Information(string.Format(MessageResources.EnqueuedMessage,
-                                                                        message.MessageId, destinationQueueUriValue));
-                                      }
-                                      else
-                                      {
-                                          Log.Warning(string.Format(MessageResources.CouldNotRemoveMessage,
-                                                                    message.MessageId, sourceQueueUriValue));
-                                      }
+							  //			destination.Enqueue(message.MessageId, serializer.Serialize(message));
 
-                                      scope.Complete();
-                                  }
-                              }
+							  //			Log.Information(string.Format(MessageResources.EnqueuedMessage,
+							  //										  message.MessageId, destinationQueueUriValue));
+							  //		}
+							  //		else
+							  //		{
+							  //			Log.Warning(string.Format(MessageResources.CouldNotRemoveMessage,
+							  //									  message.MessageId, sourceQueueUriValue));
+							  //		}
+
+							  //		scope.Complete();
+							  //	}
+							  //}
                           })
                 ;
 
@@ -220,37 +223,39 @@ namespace Shuttle.Management.Messages
             QueueTask("ReturnToSourceQueue",
                       () =>
                           {
-                              var source = queueManager.GetQueue(sourceQueueUriValue);
+							  // TODO: FIX
+							  
+							  //var source = queueManager.GetQueue(sourceQueueUriValue);
 
-                              foreach (var message in view.SelectedMessages)
-                              {
-                                  message.StopIgnoring();
-                                  message.FailureMessages.Clear();
+							  //foreach (var message in view.SelectedMessages)
+							  //{
+							  //	message.StopIgnoring();
+							  //	message.FailureMessages.Clear();
 
-                                  var destination = queueManager.GetQueue(message.RecipientInboxWorkQueueUri);
+							  //	var destination = queueManager.GetQueue(message.RecipientInboxWorkQueueUri);
 
-                                  using (var scope = new TransactionScope())
-                                  {
-                                      if (source.Remove(message.MessageId))
-                                      {
-                                          Log.Information(string.Format(MessageResources.RemovedMessage,
-                                                                        message.MessageId, sourceQueueUriValue));
+							  //	using (var scope = new TransactionScope())
+							  //	{
+							  //		if (source.Remove(message.MessageId))
+							  //		{
+							  //			Log.Information(string.Format(MessageResources.RemovedMessage,
+							  //										  message.MessageId, sourceQueueUriValue));
 
-                                          destination.Enqueue(message.MessageId, serializer.Serialize(message));
+							  //			destination.Enqueue(message.MessageId, serializer.Serialize(message));
 
-                                          Log.Information(string.Format(MessageResources.EnqueuedMessage,
-                                                                        message.MessageId,
-                                                                        message.RecipientInboxWorkQueueUri));
-                                      }
-                                      else
-                                      {
-                                          Log.Warning(string.Format(MessageResources.CouldNotRemoveMessage,
-                                                                    message.MessageId, sourceQueueUriValue));
-                                      }
+							  //			Log.Information(string.Format(MessageResources.EnqueuedMessage,
+							  //										  message.MessageId,
+							  //										  message.RecipientInboxWorkQueueUri));
+							  //		}
+							  //		else
+							  //		{
+							  //			Log.Warning(string.Format(MessageResources.CouldNotRemoveMessage,
+							  //									  message.MessageId, sourceQueueUriValue));
+							  //		}
 
-                                      scope.Complete();
-                                  }
-                              }
+							  //		scope.Complete();
+							  //	}
+							  //}
                           });
 
             RefreshQueue();
@@ -291,25 +296,27 @@ namespace Shuttle.Management.Messages
             QueueTask("StopIgnoring",
                       () =>
                           {
-                              var source = queueManager.GetQueue(sourceQueueUriValue);
+							  // TODO: FIX
+							  
+							  //var source = queueManager.GetQueue(sourceQueueUriValue);
 
-                              foreach (var message in view.SelectedMessages)
-                              {
-                                  message.StopIgnoring();
+							  //foreach (var message in view.SelectedMessages)
+							  //{
+							  //	message.StopIgnoring();
 
-                                  using (var scope = new TransactionScope())
-                                  {
-                                      if (source.Remove(message.MessageId))
-                                      {
-                                          source.Enqueue(message.MessageId, serializer.Serialize(message));
-                                      }
+							  //	using (var scope = new TransactionScope())
+							  //	{
+							  //		if (source.Remove(message.MessageId))
+							  //		{
+							  //			source.Enqueue(message.MessageId, serializer.Serialize(message));
+							  //		}
 
-                                      scope.Complete();
-                                  }
+							  //		scope.Complete();
+							  //	}
 
-                                  Log.Information(string.Format(MessageResources.StoppedIgnoringMessage,
-                                                                message.MessageId));
-                              }
+							  //	Log.Information(string.Format(MessageResources.StoppedIgnoringMessage,
+							  //								  message.MessageId));
+							  //}
                           });
 
             RefreshQueue();

@@ -5,6 +5,6 @@ namespace Shuttle.Management.Shell
 {
     public static class QueueColumns
     {
-		public static readonly MappedColumn<string> Uri = new MappedColumn<string>("Uri", DbType.AnsiString, 130).AsIdentifier();
+		public static readonly MappedColumn<string> Uri = new MappedColumn<string>("Uri", DbType.AnsiString, 130);
     }
 }

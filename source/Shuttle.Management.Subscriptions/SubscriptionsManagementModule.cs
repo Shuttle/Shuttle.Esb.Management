@@ -4,7 +4,6 @@ using Castle.Windsor;
 using Shuttle.Core.Data;
 using Shuttle.Core.Data.Castle;
 using Shuttle.Core.Infrastructure;
-using Shuttle.Core.Infrastructure.Castle;
 using Shuttle.Management.Shell;
 
 namespace Shuttle.Management.Subscriptions
@@ -40,12 +39,12 @@ namespace Shuttle.Management.Subscriptions
 
             container.RegisterDataAccess("Shuttle.Management.Subscriptions");
 
-            container.RegisterSingleton<ISubscriptionManagementPresenter, SubscriptionManagementPresenter>();
+			container.Register(Component.For<ISubscriptionManagementPresenter>().ImplementedBy<SubscriptionManagementPresenter>());
         }
 
         public IEnumerable<IManagementModulePresenter> Presenters
         {
-            get { return container.ResolveAssignable<IManagementModulePresenter>(); }
+            get { return container.ResolveAll<IManagementModulePresenter>(); }
         }
     }
 }

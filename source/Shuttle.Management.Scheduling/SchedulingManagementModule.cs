@@ -4,7 +4,6 @@ using Castle.Windsor;
 using Shuttle.Core.Data;
 using Shuttle.Core.Data.Castle;
 using Shuttle.Core.Infrastructure;
-using Shuttle.Core.Infrastructure.Castle;
 using Shuttle.Management.Shell;
 
 namespace Shuttle.Management.Scheduling
@@ -37,12 +36,12 @@ namespace Shuttle.Management.Scheduling
 
             container.RegisterDataAccess("Shuttle.Scheduling");
 
-            container.RegisterSingleton<IScheduleManagementPresenter, ScheduleManagementPresenter>();
+	        container.Register(Component.For<IScheduleManagementPresenter>().ImplementedBy<ScheduleManagementPresenter>());
         }
 
         public IEnumerable<IManagementModulePresenter> Presenters
         {
-            get { return container.ResolveAssignable<IManagementModulePresenter>(); }
+            get { return container.ResolveAll<IManagementModulePresenter>(); }
         }
     }
 }

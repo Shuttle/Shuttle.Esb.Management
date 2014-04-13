@@ -9,7 +9,7 @@ namespace Shuttle.Management.Subscriptions
 		void PopulateSubscriberUris(IEnumerable<string> uris);
 		void ClearSubscriptions();
 		string InboxWorkQueueUriValue { get; }
-		void AddSubscription(string messageType, string acceptedBy, DateTime acceptedDate);
+		void AddSubscription(string messageType);
 		List<string> SelectedMessageTypes { get; }
 		IEnumerable<string> SelectedSubscriptions { get; }
 		void AddSubscription(string inboxWorkQueueUri, string messageType);

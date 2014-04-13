@@ -9,7 +9,8 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Shuttle.Management.Messages</RootNamespace>
     <AssemblyName>Shuttle.Management.Messages</AssemblyName>
-    <TargetFrameworkProfile></TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -51,31 +52,34 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net">
-      <HintPath>..\..\external-bin\log4net\log4net.dll</HintPath>
+      <HintPath>..\packages\log4net.2.0.3\lib\net35-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="RabbitMQ.Client">
+      <HintPath>..\packages\RabbitMQ.Client.3.3.0\lib\net30\RabbitMQ.Client.dll</HintPath>
     </Reference>
     <Reference Include="Shuttle.Core.Data">
-      <HintPath>..\..\external-bin\shuttle.core\$(Framework)\Shuttle.Core.Data.dll</HintPath>
+      <HintPath>..\packages\shuttle-core-data.3.0.0.0\lib\net35-full\Shuttle.Core.Data.dll</HintPath>
     </Reference>
     <Reference Include="Shuttle.Core.Domain">
-      <HintPath>..\..\external-bin\shuttle.core\$(Framework)\Shuttle.Core.Domain.dll</HintPath>
+      <HintPath>..\packages\shuttle-core-domain.3.0.0.0\lib\net35-full\Shuttle.Core.Domain.dll</HintPath>
     </Reference>
     <Reference Include="Shuttle.Core.Infrastructure">
-      <HintPath>..\..\external-bin\shuttle.core\$(Framework)\Shuttle.Core.Infrastructure.dll</HintPath>
+      <HintPath>..\packages\shuttle-core-infrastructure.3.0.0.0\lib\net35-full\Shuttle.Core.Infrastructure.dll</HintPath>
     </Reference>
     <Reference Include="Shuttle.Core.Infrastructure.Log4Net">
-      <HintPath>..\..\external-bin\shuttle.core\$(Framework)\Shuttle.Core.Infrastructure.Log4Net.dll</HintPath>
-    </Reference>
-    <Reference Include="Shuttle.Core.SqlServer">
-      <HintPath>..\..\external-bin\shuttle.core\$(Framework)\Shuttle.Core.SqlServer.dll</HintPath>
+      <HintPath>..\packages\shuttle-core-infrastructure-log4net.3.0.0.0\lib\net35-full\Shuttle.Core.Infrastructure.Log4Net.dll</HintPath>
     </Reference>
     <Reference Include="Shuttle.ESB.Core">
-      <HintPath>..\..\external-bin\shuttle.esb\$(Framework)\Shuttle.ESB.Core.dll</HintPath>
+      <HintPath>..\packages\shuttle-esb-core.3.0.0-rc1\lib\net35-full\Shuttle.ESB.Core.dll</HintPath>
     </Reference>
     <Reference Include="Shuttle.ESB.Msmq">
-      <HintPath>..\..\external-bin\shuttle.esb\$(Framework)\Shuttle.ESB.Msmq.dll</HintPath>
+      <HintPath>..\packages\shuttle-esb-msmq.3.0.0-rc1\lib\net35-full\Shuttle.ESB.Msmq.dll</HintPath>
+    </Reference>
+    <Reference Include="Shuttle.ESB.RabbitMQ">
+      <HintPath>..\packages\shuttle-esb-rabbitmq.3.0.0-rc1\lib\net35-full\Shuttle.ESB.RabbitMQ.dll</HintPath>
     </Reference>
     <Reference Include="Shuttle.ESB.SqlServer">
-      <HintPath>..\..\external-bin\shuttle.esb\$(Framework)\Shuttle.ESB.SqlServer.dll</HintPath>
+      <HintPath>..\packages\shuttle-esb-sqlserver.3.0.0-rc1\lib\net35-full\Shuttle.ESB.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -143,6 +147,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="Resources\arrow_refresh_small.png" />
   </ItemGroup>
   <ItemGroup>
@@ -181,7 +186,8 @@ del $(TargetDir)Shuttle.Management.exe.config
 copy $(ProjectDir)app.config $(TargetDir)Shuttle.Management.exe.config</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent></PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
