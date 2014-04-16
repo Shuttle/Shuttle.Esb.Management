@@ -15,18 +15,18 @@ namespace Shuttle.Management.Shell
 
             this.presenter = presenter;
 
-            DataStoreToolStrip.AddItem(ManagementResources.Text_Remove,
-                                       ManagementResources.Image_Remove,
+            DataStoreToolStrip.AddItem(ManagementResources.TextRemove,
+                                       ManagementResources.ImageRemove,
                                        delegate { presenter.Remove(); });
-            DataStoreToolStrip.AddItem(ManagementResources.Text_Save,
-                                       ManagementResources.Image_Save,
+            DataStoreToolStrip.AddItem(ManagementResources.TextSave,
+                                       ManagementResources.ImageSave,
                                        delegate { presenter.Save(); });
-            DataStoreToolStrip.AddItem(ManagementResources.Text_CheckAll,
+            DataStoreToolStrip.AddItem(ManagementResources.TextCheckAll,
                                        delegate { presenter.CheckAll(); });
-            DataStoreToolStrip.AddItem(ManagementResources.Text_InvertChecks,
+            DataStoreToolStrip.AddItem(ManagementResources.TextInvertChecks,
                                        delegate { presenter.InvertChecks(); });
-            DataStoreToolStrip.AddItem(ManagementResources.Text_Refresh,
-                                       ManagementResources.Image_RefreshSmall,
+            DataStoreToolStrip.AddItem(ManagementResources.TextRefresh,
+                                       ManagementResources.ImageRefreshSmall,
                                        delegate { presenter.Refresh(); });
         }
 

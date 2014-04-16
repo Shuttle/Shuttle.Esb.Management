@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Image_Queues" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="ImageQueues" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\database_table.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Text_Queues" xml:space="preserve">
+  <data name="TextQueues" xml:space="preserve">
     <value>Queues</value>
   </data>
   <data name="RunningTask" xml:space="preserve">
@@ -154,34 +154,28 @@
     <value>Could not create queue repository from type '{0}'.  Exception reported: {1}</value>
     <comment>{0} = queue repository type, {1} = expection</comment>
   </data>
-  <data name="Image_Add" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="ImageAdd" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\add.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Image_ArrowDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\arrow_down.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Image_RefreshSmall" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="ImageRefreshSmall" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\arrow_refresh_small.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Image_Remove" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="ImageRemove" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\delete.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Text_Add" xml:space="preserve">
+  <data name="TextAdd" xml:space="preserve">
     <value>Add</value>
   </data>
-  <data name="Text_CheckAll" xml:space="preserve">
+  <data name="TextCheckAll" xml:space="preserve">
     <value>Check all</value>
   </data>
-  <data name="Text_InvertChecks" xml:space="preserve">
+  <data name="TextInvertChecks" xml:space="preserve">
     <value>Invert checks</value>
   </data>
-  <data name="Text_Move" xml:space="preserve">
-    <value>Move</value>
-  </data>
-  <data name="Text_Refresh" xml:space="preserve">
+  <data name="TextRefresh" xml:space="preserve">
     <value>Refresh</value>
   </data>
-  <data name="Text_Remove" xml:space="preserve">
+  <data name="TextRemove" xml:space="preserve">
     <value>Remove</value>
   </data>
   <data name="Uri" xml:space="preserve">
@@ -202,10 +196,10 @@
   <data name="Confirmation" xml:space="preserve">
     <value>Confirmation</value>
   </data>
-  <data name="Image_DataStores" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="ImageDataStores" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\database.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Text_DataStores" xml:space="preserve">
+  <data name="TextDataStores" xml:space="preserve">
     <value>Data stores</value>
   </data>
   <data name="ViewUserControlNull" xml:space="preserve">
@@ -230,10 +224,10 @@
     <value>Attempting creation of data store repository from type '{0}'.</value>
     <comment>{0} = data store repository type</comment>
   </data>
-  <data name="Image_Save" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="ImageSave" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\bullet_disk.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Text_Save" xml:space="preserve">
+  <data name="TextSave" xml:space="preserve">
     <value>Save</value>
   </data>
   <data name="ConnectionString" xml:space="preserve">
@@ -270,13 +264,13 @@
   <data name="InboxWorkQueueUri" xml:space="preserve">
     <value>Inbox work queue uri</value>
   </data>
-  <data name="Image_DriveMagnify" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="ImageDriveMagnify" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\drive_magnify.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Text_RefreshDataStores" xml:space="preserve">
+  <data name="TextRefreshDataStores" xml:space="preserve">
     <value>Refresh data stores</value>
   </data>
-  <data name="Image_Filter" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="ImageFilter" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\application_form_magnify.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

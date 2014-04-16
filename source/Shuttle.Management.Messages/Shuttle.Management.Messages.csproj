@@ -178,6 +178,9 @@
   <ItemGroup>
     <None Include="Resources\bug_delete.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\arrow_down1.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>md "..\..\..\..\build\$(ConfigurationName)\$(Framework)"

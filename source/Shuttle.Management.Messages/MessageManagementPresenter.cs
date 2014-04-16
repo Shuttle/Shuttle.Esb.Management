@@ -1,7 +1,6 @@
 using System;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Transactions;
 using System.Windows.Forms;
 using Shuttle.Core.Infrastructure;
@@ -12,48 +11,49 @@ namespace Shuttle.Management.Messages
 {
     public class MessageManagementPresenter : ManagementModulePresenter, IMessageManagementPresenter
     {
-        private readonly IMessageConfiguration messageConfiguration;
-        private readonly IQueueManager queueManager;
-        private readonly ISerializer serializer;
-        private readonly IMessageManagementView view;
+        private readonly IMessageConfiguration _messageConfiguration;
+        private readonly IQueueManager _queueManager;
+        private readonly ISerializer _serializer;
+        private readonly IMessageManagementView _view;
 
-        public MessageManagementPresenter()
+	    private string _sourceQueueUri;
+	    private ReceivedMessage _receivedMessage;
+	    private TransportMessage _transportMessage;
+
+	    public MessageManagementPresenter()
         {
-            view = new MessageManagementView(this);
+            _view = new MessageManagementView(this);
 
-			queueManager = QueueManager.Default();
+			_queueManager = QueueManager.Default();
 
-            messageConfiguration = new MessageConfiguration();
+            _messageConfiguration = new MessageConfiguration();
 
-            serializer = messageConfiguration.GetSerializer();
+            _serializer = _messageConfiguration.GetSerializer();
         }
 
         public override string Text
         {
-            get { return MessageResources.Text_Messages; }
+            get { return MessageResources.TextMessages; }
         }
 
         public override Image Image
         {
-            get { return MessageResources.Image_Messages; }
+            get { return MessageResources.ImageMessage; }
         }
 
         public override UserControl ViewUserControl
         {
-            get { return (UserControl) view; }
+            get { return (UserControl) _view; }
         }
 
         public void RefreshQueue()
         {
-            var sourceQueueUriValue = view.SourceQueueUriValue;
-            var fetchCountValue = view.FetchCountValue;
-
+            var sourceQueueUriValue = _view.SourceQueueUriValue;
+            
             QueueTask("RefreshQueue",
                       () =>
                           {
-                              view.ClearMessages();
-
-                              var reader = queueManager.GetQueue(sourceQueueUriValue) as IQueueReader;
+	                          var reader = _queueManager.GetQueue(sourceQueueUriValue) as IQueueReader;
 
                               if (reader == null)
                               {
@@ -61,70 +61,65 @@ namespace Shuttle.Management.Messages
 
                                   return;
                               }
-
-                              view.PopulateMessages(
-                                  reader.Read(fetchCountValue)
-                                      .Select(stream => serializer.Deserialize(typeof (TransportMessage), stream)).Cast
-                                      <TransportMessage>());
                           }
                 );
         }
 
         public void Remove()
         {
-            if (!view.HasSelectedMessages)
-            {
-                Log.Error(MessageResources.NoMessagesSelected);
+			//if (!_view.HasSelectedMessages)
+			//{
+			//	Log.Error(MessageResources.NoMessagesSelected);
 
-                return;
-            }
+			//	return;
+			//}
 
-            if (MessageBox.Show(MessageResources.ConfirmMessageDeletion,
-                                MessageResources.Confirmation,
-                                MessageBoxButtons.YesNo,
-                                MessageBoxIcon.Question) != DialogResult.Yes)
-            {
-                return;
-            }
+			//if (MessageBox.Show(MessageResources.ConfirmMessageDeletion,
+			//					MessageResources.Confirmation,
+			//					MessageBoxButtons.YesNo,
+			//					MessageBoxIcon.Question) != DialogResult.Yes)
+			//{
+			//	return;
+			//}
 
-            var sourceQueueUriValue = view.SourceQueueUriValue;
+			//var sourceQueueUriValue = _view.SourceQueueUriValue;
 
-            QueueTask("Remove",
-                      () =>
-                          {
-                              var queue = queueManager.GetQueue(sourceQueueUriValue);
+			//QueueTask("Remove",
+			//		  () =>
+			//			  {
+			//				  var queue = _queueManager.GetQueue(sourceQueueUriValue);
 
-                              foreach (var message in view.SelectedMessages)
-                              {
-                                  queue.GetMessage();
-	                              queue.Acknowledge(message.MessageId);
-                              }
-                          });
+			//				  foreach (var message in _view.SelectedMessages)
+			//				  {
+			//					  queue.GetMessage();
+			//					  queue.Acknowledge(message.MessageId);
+			//				  }
+			//			  });
 
             RefreshQueue();
         }
 
         public void Move()
         {
-            if (!view.HasSelectedMessages)
-            {
-                Log.Error(MessageResources.NoMessagesSelected);
+			//if (!_view.HasSelectedMessages)
+			//{
+			//	Log.Error(MessageResources.NoMessagesSelected);
 
-                return;
-            }
+			//	return;
+			//}
 
-            var sourceQueueUriValue = view.SourceQueueUriValue;
-            var destinationQueueUriValue = view.DestinationQueueUriValue;
+            var sourceQueueUriValue = _view.SourceQueueUriValue;
+            var destinationQueueUriValue = _view.DestinationQueueUriValue;
 
             QueueTask("Move",
                       () =>
                           {
 							  // TODO: FIX
 
-							  //var source = queueManager.GetQueue(sourceQueueUriValue);
-							  //var destination = queueManager.GetQueue(destinationQueueUriValue);
+							  //var source = _queueManager.GetQueue(sourceQueueUriValue);
+							  //var destination = _queueManager.GetQueue(destinationQueueUriValue);
 
-							  //foreach (var message in view.SelectedMessages)
+							  //foreach (var message in _view.SelectedMessages)
 							  //{
 							  //	using (var scope = new TransactionScope())
 							  //	{
@@ -133,7 +128,7 @@ namespace Shuttle.Management.Messages
 							  //			Log.Information(string.Format(MessageResources.RemovedMessage,
 							  //										  message.MessageId, sourceQueueUriValue));
 
-							  //			destination.Enqueue(message.MessageId, serializer.Serialize(message));
+							  //			destination.Enqueue(message.MessageId, _serializer.Serialize(message));
 
 							  //			Log.Information(string.Format(MessageResources.EnqueuedMessage,
 							  //										  message.MessageId, destinationQueueUriValue));
@@ -153,86 +148,23 @@ namespace Shuttle.Management.Messages
             RefreshQueue();
         }
 
-        public void MessageSelected()
-        {
-            view.ClearMessageView();
-
-            if (!view.HasSelectedMessages)
-            {
-                return;
-            }
-
-            var transportMessage = view.SelectedTransportMessage();
-
-            QueueTask("MessageSelected",
-                      () =>
-                          {
-                              object message = null;
-
-                              try
-                              {
-                                  var type = Type.GetType(transportMessage.AssemblyQualifiedName, true, true);
-
-                                  var canDisplayMessage = true;
-
-                                  if (transportMessage.CompressionEnabled())
-                                  {
-                                      Log.Warning(string.Format(MessageResources.MessageCompressed,
-                                                                transportMessage.MessageId));
-                                      canDisplayMessage = false;
-                                  }
-
-                                  if (transportMessage.EncryptionEnabled())
-                                  {
-                                      Log.Warning(string.Format(MessageResources.MessageEncrypted,
-                                                                transportMessage.MessageId));
-                                      canDisplayMessage = false;
-                                  }
-
-                                  if (canDisplayMessage)
-                                  {
-                                      using (var stream = new MemoryStream(transportMessage.Message))
-                                      {
-                                          message = serializer.Deserialize(type, stream);
-                                      }
-
-                                      if (!type.AssemblyQualifiedName.Equals(transportMessage.AssemblyQualifiedName))
-                                      {
-                                          Log.Warning(string.Format(MessageResources.MessageTypeMismatch,
-                                                                    transportMessage.AssemblyQualifiedName,
-                                                                    type.AssemblyQualifiedName));
-                                      }
-                                  }
-                              }
-                              catch (Exception ex)
-                              {
-                                  Log.Warning(string.Format(MessageResources.CannotObtainMessageType,
-                                                            transportMessage.AssemblyQualifiedName));
-                                  Log.Error(ex.Message);
-                              }
-
-                              view.ShowMessage(transportMessage, message);
-                          }
-                );
-        }
-
         public void ReturnToSourceQueue()
         {
-            var sourceQueueUriValue = view.SourceQueueUriValue;
+            var sourceQueueUriValue = _view.SourceQueueUriValue;
 
             QueueTask("ReturnToSourceQueue",
                       () =>
                           {
 							  // TODO: FIX
 							  
-							  //var source = queueManager.GetQueue(sourceQueueUriValue);
+							  //var source = _queueManager.GetQueue(sourceQueueUriValue);
 
-							  //foreach (var message in view.SelectedMessages)
+							  //foreach (var message in _view.SelectedMessages)
 							  //{
 							  //	message.StopIgnoring();
 							  //	message.FailureMessages.Clear();
 
-							  //	var destination = queueManager.GetQueue(message.RecipientInboxWorkQueueUri);
+							  //	var destination = _queueManager.GetQueue(message.RecipientInboxWorkQueueUri);
 
 							  //	using (var scope = new TransactionScope())
 							  //	{
@@ -241,7 +173,7 @@ namespace Shuttle.Management.Messages
 							  //			Log.Information(string.Format(MessageResources.RemovedMessage,
 							  //										  message.MessageId, sourceQueueUriValue));
 
-							  //			destination.Enqueue(message.MessageId, serializer.Serialize(message));
+							  //			destination.Enqueue(message.MessageId, _serializer.Serialize(message));
 
 							  //			Log.Information(string.Format(MessageResources.EnqueuedMessage,
 							  //										  message.MessageId,
@@ -261,46 +193,28 @@ namespace Shuttle.Management.Messages
             RefreshQueue();
         }
 
-        public void CheckAll()
+	    public override void OnViewReady()
         {
-            QueueTask("CheckAll", () => view.CheckAll());
-        }
-
-        public void InvertChecks()
-        {
-            QueueTask("InvertChecks", () => view.InvertChecks());
-        }
-
-        public override void OnViewReady()
-        {
-            view.AddFetchCount(0);
-            view.AddFetchCount(50);
-            view.AddFetchCount(200);
-            view.AddFetchCount(500);
-            view.AddFetchCount(1000);
-
-            view.FetchCountValue = 200;
-
-            RefreshQueues();
+	        RefreshQueues();
         }
 
         public void RefreshQueues()
         {
-            QueueTask("RefreshQueues", () => view.PopulateQueues(ManagementConfiguration.QueueRepository().All()));
+            QueueTask("RefreshQueues", () => _view.PopulateQueues(ManagementConfiguration.QueueRepository().All()));
         }
 
         public void StopIgnoring()
         {
-            var sourceQueueUriValue = view.SourceQueueUriValue;
+            var sourceQueueUriValue = _view.SourceQueueUriValue;
 
             QueueTask("StopIgnoring",
                       () =>
                           {
 							  // TODO: FIX
 							  
-							  //var source = queueManager.GetQueue(sourceQueueUriValue);
+							  //var source = _queueManager.GetQueue(sourceQueueUriValue);
 
-							  //foreach (var message in view.SelectedMessages)
+							  //foreach (var message in _view.SelectedMessages)
 							  //{
 							  //	message.StopIgnoring();
 
@@ -308,7 +222,7 @@ namespace Shuttle.Management.Messages
 							  //	{
 							  //		if (source.Remove(message.MessageId))
 							  //		{
-							  //			source.Enqueue(message.MessageId, serializer.Serialize(message));
+							  //			source.Enqueue(message.MessageId, _serializer.Serialize(message));
 							  //		}
 
 							  //		scope.Complete();
@@ -321,5 +235,105 @@ namespace Shuttle.Management.Messages
 
             RefreshQueue();
         }
+
+	    public void MoveAll()
+	    {
+		    throw new NotImplementedException();
+	    }
+
+	    public void ReturnAllToSourceQueue()
+	    {
+		    throw new NotImplementedException();
+	    }
+
+	    public void GetMessage()
+	    {
+		    if (HasSelectedMessage)
+		    {
+			    QueueTask("ReleaseMessage",
+			              () =>
+				              {
+								  var queue = _queueManager.GetQueue(_sourceQueueUri);
+
+								  if (queue == null)
+								  {
+									  Log.Error(MessageResources.SourceQueueUriReader);
+
+									  return;
+								  }
+
+								  queue.Release(_receivedMessage.AcknowledgementToken);
+				              });
+		    }
+
+		    _sourceQueueUri = _view.SourceQueueUriValue;
+
+			QueueTask("GetMessage",
+					  () =>
+					  {
+						  var queue = _queueManager.GetQueue(_sourceQueueUri);
+
+						  if (queue == null)
+						  {
+							  Log.Error(MessageResources.SourceQueueUriReader);
+
+							  return;
+						  }
+
+						  _receivedMessage = queue.GetMessage();
+
+						  _transportMessage = (TransportMessage)_serializer.Deserialize(typeof(TransportMessage), _receivedMessage.Stream);
+
+						  object message = null;
+
+						  try
+						  {
+							  var type = Type.GetType(_transportMessage.AssemblyQualifiedName, true, true);
+
+							  var canDisplayMessage = true;
+
+							  if (_transportMessage.CompressionEnabled())
+							  {
+								  Log.Warning(string.Format(MessageResources.MessageCompressed, _transportMessage.MessageId));
+								  canDisplayMessage = false;
+							  }
+
+							  if (_transportMessage.EncryptionEnabled())
+							  {
+								  Log.Warning(string.Format(MessageResources.MessageEncrypted, _transportMessage.MessageId));
+								  canDisplayMessage = false;
+							  }
+
+							  if (canDisplayMessage)
+							  {
+								  using (var stream = new MemoryStream(_transportMessage.Message))
+								  {
+									  message = _serializer.Deserialize(type, stream);
+								  }
+
+								  if (!type.AssemblyQualifiedName.Equals(_transportMessage.AssemblyQualifiedName))
+								  {
+									  Log.Warning(string.Format(MessageResources.MessageTypeMismatch,
+																_transportMessage.AssemblyQualifiedName,
+																type.AssemblyQualifiedName));
+								  }
+							  }
+						  }
+						  catch (Exception ex)
+						  {
+							  Log.Warning(string.Format(MessageResources.CannotObtainMessageType,
+														_transportMessage.AssemblyQualifiedName));
+							  Log.Error(ex.Message);
+						  }
+
+						  _view.ShowMessage(_transportMessage, message);
+					  }
+				);
+		}
+
+	    protected bool HasSelectedMessage
+	    {
+		    get { return _receivedMessage != null; }
+	    }
     }
 }

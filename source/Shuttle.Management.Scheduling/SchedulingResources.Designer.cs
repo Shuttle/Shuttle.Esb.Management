@@ -69,9 +69,9 @@ namespace Shuttle.Management.Scheduling {
             }
         }
         
-        internal static System.Drawing.Bitmap Image_Schedules {
+        internal static System.Drawing.Bitmap ImageSchedules {
             get {
-                object obj = ResourceManager.GetObject("Image_Schedules", resourceCulture);
+                object obj = ResourceManager.GetObject("ImageSchedules", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -97,18 +97,18 @@ namespace Shuttle.Management.Scheduling {
         /// <summary>
         ///   Looks up a localized string similar to Refresh schedules.
         /// </summary>
-        internal static string Text_RefreshSchedules {
+        internal static string TextRefreshSchedules {
             get {
-                return ResourceManager.GetString("Text_RefreshSchedules", resourceCulture);
+                return ResourceManager.GetString("TextRefreshSchedules", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Schedules.
         /// </summary>
-        internal static string Text_Schedules {
+        internal static string TextSchedules {
             get {
-                return ResourceManager.GetString("Text_Schedules", resourceCulture);
+                return ResourceManager.GetString("TextSchedules", resourceCulture);
             }
         }
     }

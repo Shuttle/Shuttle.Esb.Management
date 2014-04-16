@@ -211,7 +211,7 @@ namespace Shuttle.Management.Subscriptions
 				return;
 			}
 
-			if (MessageBox.Show(string.Format(ManagementResources.ConfirmRemoval, SubscriptionResources.Text_Subscriptions), ManagementResources.Confirmation, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+			if (MessageBox.Show(string.Format(ManagementResources.ConfirmRemoval, SubscriptionResources.TextSubscriptions), ManagementResources.Confirmation, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
 			{
 				return;
 			}
@@ -254,12 +254,12 @@ namespace Shuttle.Management.Subscriptions
 
 		public override string Text
 		{
-			get { return SubscriptionResources.Text_Subscriptions; }
+			get { return SubscriptionResources.TextSubscriptions; }
 		}
 
 		public override Image Image
 		{
-			get { return SubscriptionResources.Image_Subscriptions; }
+			get { return SubscriptionResources.ImageSubscriptions; }
 		}
 
 		public override UserControl ViewUserControl

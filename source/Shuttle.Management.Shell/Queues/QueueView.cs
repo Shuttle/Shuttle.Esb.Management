@@ -15,18 +15,18 @@ namespace Shuttle.Management.Shell
 
 			this.presenter = presenter;
 
-			QueueToolStrip.AddItem(ManagementResources.Text_Remove,
-								   ManagementResources.Image_Remove,
+			QueueToolStrip.AddItem(ManagementResources.TextRemove,
+								   ManagementResources.ImageRemove,
 								   delegate { presenter.Remove(); });
-			QueueToolStrip.AddItem(ManagementResources.Text_Save,
-								   ManagementResources.Image_Save,
+			QueueToolStrip.AddItem(ManagementResources.TextSave,
+								   ManagementResources.ImageSave,
 								   delegate { presenter.Save(); });
-			QueueToolStrip.AddItem(ManagementResources.Text_CheckAll,
+			QueueToolStrip.AddItem(ManagementResources.TextCheckAll,
 								   delegate { presenter.CheckAll(); });
-			QueueToolStrip.AddItem(ManagementResources.Text_InvertChecks,
+			QueueToolStrip.AddItem(ManagementResources.TextInvertChecks,
 								   delegate { presenter.InvertChecks(); });
-			QueueToolStrip.AddItem(ManagementResources.Text_Refresh,
-								   ManagementResources.Image_RefreshSmall,
+			QueueToolStrip.AddItem(ManagementResources.TextRefresh,
+								   ManagementResources.ImageRefreshSmall,
 								   delegate { presenter.Refresh(); });
 		}
 

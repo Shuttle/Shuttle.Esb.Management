@@ -18,12 +18,12 @@ namespace Shuttle.Management.Shell
 
 		public override string Text
 		{
-			get { return ManagementResources.Text_DataStores; }
+			get { return ManagementResources.TextDataStores; }
 		}
 
 		public override Image Image
 		{
-			get { return ManagementResources.Image_DataStores; }
+			get { return ManagementResources.ImageDataStores; }
 		}
 
 		public override UserControl ViewUserControl
@@ -61,12 +61,12 @@ namespace Shuttle.Management.Shell
         {
             if (!view.HasSelectedDataStores)
             {
-                Log.Warning(string.Format(ManagementResources.NoItemsSelected, ManagementResources.Text_DataStores));
+                Log.Warning(string.Format(ManagementResources.NoItemsSelected, ManagementResources.TextDataStores));
 
                 return;
             }
 
-            if (MessageBox.Show(string.Format(ManagementResources.ConfirmRemoval, ManagementResources.Text_DataStores), ManagementResources.Confirmation, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+            if (MessageBox.Show(string.Format(ManagementResources.ConfirmRemoval, ManagementResources.TextDataStores), ManagementResources.Confirmation, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
             {
                 return;
             }

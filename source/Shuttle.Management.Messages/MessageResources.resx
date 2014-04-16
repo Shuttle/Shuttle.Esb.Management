@@ -124,14 +124,14 @@
   <data name="ConfirmMessageDeletion" xml:space="preserve">
     <value>You are about to delete the selected message(s).  Continue?</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Image_ArrowBack" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="ImageArrowBack" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\arrow_undo.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Image_Messages" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="ImageMessage" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\table.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Text_Messages" xml:space="preserve">
+  <data name="TextMessages" xml:space="preserve">
     <value>Messages</value>
   </data>
   <data name="NoMessagesSelected" xml:space="preserve">
@@ -140,10 +140,10 @@
   <data name="SourceQueueUriReader" xml:space="preserve">
     <value>Could not get the IQueueReader for the queue represented by the source queue uri.</value>
   </data>
-  <data name="Text_ReturnToSourceQueue" xml:space="preserve">
+  <data name="TextReturnToSourceQueue" xml:space="preserve">
     <value>Return to source queue</value>
   </data>
-  <data name="Text_RefreshQueues" xml:space="preserve">
+  <data name="TextRefreshQueues" xml:space="preserve">
     <value>Refresh queues</value>
   </data>
   <data name="NoSerializerDefaultSerializer" xml:space="preserve">
@@ -153,13 +153,10 @@
     <value>Serializer type '{0}' could not be created. The DefaultSerializer will be used.  Exception reported: {1]</value>
     <comment>{0} = serializer type, {1} = exception</comment>
   </data>
-  <data name="Text_RefreshMessages" xml:space="preserve">
-    <value>Refresh messages</value>
-  </data>
-  <data name="Image_StopIgnoring" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="ImageStopIgnoring" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\time_go.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Text_StopIgnoring" xml:space="preserve">
+  <data name="TextStopIgnoring" xml:space="preserve">
     <value>Stop ignoring</value>
   </data>
   <data name="StoppedIgnoringMessage" xml:space="preserve">
@@ -192,5 +189,20 @@
   <data name="MessageTypeMismatch" xml:space="preserve">
     <value>The transport message assembly qualified type name '{0}' does not exactly match the type returned by the .NET runtime '{1}'.</value>
     <comment>{0} = transport message assembly qualified type name, {1} assembly qualified type name returned by .NET</comment>
+  </data>
+  <data name="TextReturnAllToSourceQueue" xml:space="preserve">
+    <value>Return all to source queue</value>
+  </data>
+  <data name="ImageArrowDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\arrow_down1.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="TextGetMessage" xml:space="preserve">
+    <value>Get message</value>
+  </data>
+  <data name="TextMove" xml:space="preserve">
+    <value>Move</value>
+  </data>
+  <data name="TextMoveAll" xml:space="preserve">
+    <value>Move all</value>
   </data>
 </root>

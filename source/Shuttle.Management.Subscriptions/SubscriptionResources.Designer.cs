@@ -63,9 +63,9 @@ namespace Shuttle.Management.Subscriptions {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Image_Subscriptions {
+        internal static System.Drawing.Bitmap ImageSubscriptions {
             get {
-                object obj = ResourceManager.GetObject("Image_Subscriptions", resourceCulture);
+                object obj = ResourceManager.GetObject("ImageSubscriptions", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,54 +73,54 @@ namespace Shuttle.Management.Subscriptions {
         /// <summary>
         ///   Looks up a localized string similar to Accept.
         /// </summary>
-        internal static string Text_Accept {
+        internal static string TextAccept {
             get {
-                return ResourceManager.GetString("Text_Accept", resourceCulture);
+                return ResourceManager.GetString("TextAccept", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Decline.
         /// </summary>
-        internal static string Text_Decline {
+        internal static string TextDecline {
             get {
-                return ResourceManager.GetString("Text_Decline", resourceCulture);
+                return ResourceManager.GetString("TextDecline", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Get assembly types.
         /// </summary>
-        internal static string Text_GetAssemblyTypes {
+        internal static string TextGetAssemblyTypes {
             get {
-                return ResourceManager.GetString("Text_GetAssemblyTypes", resourceCulture);
+                return ResourceManager.GetString("TextGetAssemblyTypes", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Refresh subscribers.
         /// </summary>
-        internal static string Text_RefreshSubscribers {
+        internal static string TextRefreshSubscribers {
             get {
-                return ResourceManager.GetString("Text_RefreshSubscribers", resourceCulture);
+                return ResourceManager.GetString("TextRefreshSubscribers", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Refresh subscriptions.
         /// </summary>
-        internal static string Text_RefreshSubscriptions {
+        internal static string TextRefreshSubscriptions {
             get {
-                return ResourceManager.GetString("Text_RefreshSubscriptions", resourceCulture);
+                return ResourceManager.GetString("TextRefreshSubscriptions", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Subscriptions.
         /// </summary>
-        internal static string Text_Subscriptions {
+        internal static string TextSubscriptions {
             get {
-                return ResourceManager.GetString("Text_Subscriptions", resourceCulture);
+                return ResourceManager.GetString("TextSubscriptions", resourceCulture);
             }
         }
     }

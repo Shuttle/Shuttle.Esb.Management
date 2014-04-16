@@ -5,9 +5,9 @@
         void RefreshQueue();
         void Remove();
         void Move();
-        void MessageSelected();
         void ReturnToSourceQueue();
-        void CheckAll();
-        void InvertChecks();
+	    void MoveAll();
+	    void ReturnAllToSourceQueue();
+	    void GetMessage();
     }
 }

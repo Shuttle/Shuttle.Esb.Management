@@ -51,7 +51,7 @@ namespace Shuttle.Management.Scheduling
             }
 
             if (
-                MessageBox.Show(string.Format(ManagementResources.ConfirmRemoval, SchedulingResources.Text_Schedules),
+                MessageBox.Show(string.Format(ManagementResources.ConfirmRemoval, SchedulingResources.TextSchedules),
                                 ManagementResources.Confirmation, MessageBoxButtons.YesNo, MessageBoxIcon.Question) !=
                 DialogResult.Yes)
             {
@@ -199,12 +199,12 @@ namespace Shuttle.Management.Scheduling
 
         public override string Text
         {
-            get { return SchedulingResources.Text_Schedules; }
+            get { return SchedulingResources.TextSchedules; }
         }
 
         public override Image Image
         {
-            get { return SchedulingResources.Image_Schedules; }
+            get { return SchedulingResources.ImageSchedules; }
         }
 
         public override UserControl ViewUserControl

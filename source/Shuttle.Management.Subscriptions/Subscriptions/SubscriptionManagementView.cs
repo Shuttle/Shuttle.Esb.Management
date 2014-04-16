@@ -17,32 +17,32 @@ namespace Shuttle.Management.Subscriptions
 
 			InitializeComponent();
 
-			SubscriptionToolStrip.AddItem(ManagementResources.Text_Remove,
-			                              ManagementResources.Image_Remove,
+			SubscriptionToolStrip.AddItem(ManagementResources.TextRemove,
+			                              ManagementResources.ImageRemove,
 			                              delegate { presenter.RemoveSubscriptions(); });
-			SubscriptionToolStrip.AddItem(ManagementResources.Text_CheckAll,
+			SubscriptionToolStrip.AddItem(ManagementResources.TextCheckAll,
 			                              delegate { presenter.CheckAllSubscriptions(); });
-			SubscriptionToolStrip.AddItem(ManagementResources.Text_InvertChecks,
+			SubscriptionToolStrip.AddItem(ManagementResources.TextInvertChecks,
 			                              delegate { presenter.InvertSubscriptionChecks(); });
-			SubscriptionToolStrip.AddItem(SubscriptionResources.Text_RefreshSubscriptions,
-			                              ManagementResources.Image_RefreshSmall,
+			SubscriptionToolStrip.AddItem(SubscriptionResources.TextRefreshSubscriptions,
+			                              ManagementResources.ImageRefreshSmall,
 			                              delegate { presenter.RefreshSubscriptions(); });
-			SubscriptionToolStrip.AddItem(SubscriptionResources.Text_RefreshSubscribers,
-			                              ManagementResources.Image_RefreshSmall,
+			SubscriptionToolStrip.AddItem(SubscriptionResources.TextRefreshSubscribers,
+			                              ManagementResources.ImageRefreshSmall,
 			                              delegate { presenter.RefreshSubscribers(); });
-			SubscriptionToolStrip.AddItem(ManagementResources.Text_RefreshDataStores,
-			                              ManagementResources.Image_RefreshSmall,
+			SubscriptionToolStrip.AddItem(ManagementResources.TextRefreshDataStores,
+			                              ManagementResources.ImageRefreshSmall,
 			                              delegate { presenter.RefreshDataStores(); });
 
-			EventMessageTypeToolStrip.AddItem(ManagementResources.Text_Add,
-			                                  ManagementResources.Image_Add,
+			EventMessageTypeToolStrip.AddItem(ManagementResources.TextAdd,
+			                                  ManagementResources.ImageAdd,
 			                                  delegate { presenter.AddSubscriptions(); });
-			EventMessageTypeToolStrip.AddItem(ManagementResources.Text_CheckAll,
+			EventMessageTypeToolStrip.AddItem(ManagementResources.TextCheckAll,
 			                                  delegate { presenter.CheckAllEventMessageTypes(); });
-			EventMessageTypeToolStrip.AddItem(ManagementResources.Text_InvertChecks,
+			EventMessageTypeToolStrip.AddItem(ManagementResources.TextInvertChecks,
 			                                  delegate { presenter.InvertEventMessageTypeChecks(); });
-			EventMessageTypeToolStrip.AddItem(SubscriptionResources.Text_GetAssemblyTypes,
-			                                  ManagementResources.Image_DriveMagnify,
+			EventMessageTypeToolStrip.AddItem(SubscriptionResources.TextGetAssemblyTypes,
+			                                  ManagementResources.ImageDriveMagnify,
 			                                  delegate { presenter.GetAssemblyEventMessageTypes(); });
 		}
 

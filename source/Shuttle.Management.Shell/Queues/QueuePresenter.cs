@@ -15,12 +15,12 @@ namespace Shuttle.Management.Shell
 
 		public override string Text
 		{
-			get { return ManagementResources.Text_Queues; }
+			get { return ManagementResources.TextQueues; }
 		}
 
 		public override Image Image
 		{
-			get { return ManagementResources.Image_Queues; }
+			get { return ManagementResources.ImageQueues; }
 		}
 
 		public override UserControl ViewUserControl
@@ -39,12 +39,12 @@ namespace Shuttle.Management.Shell
 		{
 			if (!view.HasSelectedQueues)
 			{
-				Log.Warning(string.Format(ManagementResources.NoItemsSelected, ManagementResources.Text_Queues));
+				Log.Warning(string.Format(ManagementResources.NoItemsSelected, ManagementResources.TextQueues));
 
 				return;
 			}
 
-			if (MessageBox.Show(string.Format(ManagementResources.ConfirmRemoval, ManagementResources.Text_Queues), ManagementResources.Confirmation, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+			if (MessageBox.Show(string.Format(ManagementResources.ConfirmRemoval, ManagementResources.TextQueues), ManagementResources.Confirmation, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
 			{
 				return;
 			}

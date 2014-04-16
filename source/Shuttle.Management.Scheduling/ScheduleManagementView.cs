@@ -17,21 +17,21 @@ namespace Shuttle.Management.Scheduling
 
 			InitializeComponent();
 
-			SchedulingToolStrip.AddItem(ManagementResources.Text_Remove,
-										ManagementResources.Image_Remove,
+			SchedulingToolStrip.AddItem(ManagementResources.TextRemove,
+										ManagementResources.ImageRemove,
 										delegate { presenter.RemoveSchedule(); });
-			SchedulingToolStrip.AddItem(ManagementResources.Text_Save,
-									   ManagementResources.Image_Save,
+			SchedulingToolStrip.AddItem(ManagementResources.TextSave,
+									   ManagementResources.ImageSave,
 									   delegate { presenter.SaveSchedule(); });
-			SchedulingToolStrip.AddItem(ManagementResources.Text_CheckAll,
+			SchedulingToolStrip.AddItem(ManagementResources.TextCheckAll,
 										delegate { presenter.CheckAllSchedules(); });
-			SchedulingToolStrip.AddItem(ManagementResources.Text_InvertChecks,
+			SchedulingToolStrip.AddItem(ManagementResources.TextInvertChecks,
 										delegate { presenter.InvertScheduleChecks(); });
-			SchedulingToolStrip.AddItem(SchedulingResources.Text_RefreshSchedules,
-										ManagementResources.Image_RefreshSmall,
+			SchedulingToolStrip.AddItem(SchedulingResources.TextRefreshSchedules,
+										ManagementResources.ImageRefreshSmall,
 										delegate { presenter.RefreshSchedules(); });
-			SchedulingToolStrip.AddItem(ManagementResources.Text_RefreshDataStores,
-										ManagementResources.Image_RefreshSmall,
+			SchedulingToolStrip.AddItem(ManagementResources.TextRefreshDataStores,
+										ManagementResources.ImageRefreshSmall,
 										delegate { presenter.RefreshDataStores(); });
 		}
 
