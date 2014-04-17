@@ -30,23 +30,13 @@ namespace Shuttle.Management.Messages
         /// </summary>
         private void InitializeComponent()
         {
-			this.MessageView = new Shuttle.Management.Messages.MessageView();
 			this.DestinationQueueUri = new Shuttle.Management.Shell.QueueHierarchyView();
 			this.SourceQueueUri = new Shuttle.Management.Shell.QueueHierarchyView();
 			this.label3 = new System.Windows.Forms.Label();
 			this.label4 = new System.Windows.Forms.Label();
 			this.MessageToolStrip = new System.Windows.Forms.ToolStrip();
+			this.MessageView = new Shuttle.Management.Messages.MessageView();
 			this.SuspendLayout();
-			// 
-			// MessageView
-			// 
-			this.MessageView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.MessageView.Location = new System.Drawing.Point(11, 46);
-			this.MessageView.Name = "MessageView";
-			this.MessageView.Size = new System.Drawing.Size(694, 165);
-			this.MessageView.TabIndex = 14;
 			// 
 			// DestinationQueueUri
 			// 
@@ -67,7 +57,7 @@ namespace Shuttle.Management.Messages
 			this.SourceQueueUri.ShowQueueButtonPosition = Shuttle.Management.Shell.ShowQueueButtonPosition.Left;
 			this.SourceQueueUri.Size = new System.Drawing.Size(694, 20);
 			this.SourceQueueUri.TabIndex = 10;
-			this.SourceQueueUri.KeyUp += new System.Windows.Forms.KeyEventHandler(this.SourceQueueUri_KeyUp);
+			this.SourceQueueUri.QueueSelected += new System.EventHandler<Shuttle.Management.Shell.QueueSelectedEventArgs>(this.SourceQueueUri_QueueSelected);
 			// 
 			// label3
 			// 
@@ -100,6 +90,16 @@ namespace Shuttle.Management.Messages
 			this.MessageToolStrip.Size = new System.Drawing.Size(719, 25);
 			this.MessageToolStrip.TabIndex = 13;
 			this.MessageToolStrip.Text = "toolStrip1";
+			// 
+			// MessageView
+			// 
+			this.MessageView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.MessageView.Location = new System.Drawing.Point(11, 46);
+			this.MessageView.Name = "MessageView";
+			this.MessageView.Size = new System.Drawing.Size(694, 165);
+			this.MessageView.TabIndex = 14;
 			// 
 			// MessageManagementView
 			// 

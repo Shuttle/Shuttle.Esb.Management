@@ -17,9 +17,9 @@ namespace Shuttle.Management.Messages
 
 			this.presenter = presenter;
 
-			MessageToolStrip.AddItem(ManagementResources.TextRemove,
+			MessageToolStrip.AddItem(MessageResources.TextAcknowledge,
 			                         ManagementResources.ImageRemove,
-			                         delegate { presenter.Remove(); });
+			                         delegate { presenter.Acknowledge(); });
 			MessageToolStrip.AddItem(MessageResources.TextStopIgnoring,
 									 MessageResources.ImageStopIgnoring,
 									 delegate { presenter.StopIgnoring(); });
@@ -82,17 +82,12 @@ namespace Shuttle.Management.Messages
 
 		public void ClearMessageView()
 		{
-			MessageView.Clear();
+			this.Invoke(() => MessageView.Clear());
 		}
 
         private void SourceQueueUri_QueueSelected(object sender, QueueSelectedEventArgs e)
         {
-            presenter.RefreshQueue();
-        }
-
-        private void SourceQueueUri_KeyUp(object sender, KeyEventArgs e)
-        {
-            e.OnEnterPressed(presenter.GetMessage);
+            presenter.GetMessage();
         }
 	}
 }

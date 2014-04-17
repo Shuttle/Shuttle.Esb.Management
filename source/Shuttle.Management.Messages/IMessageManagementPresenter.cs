@@ -2,8 +2,7 @@
 {
     public interface IMessageManagementPresenter
     {
-        void RefreshQueue();
-        void Remove();
+	    void Acknowledge();
         void Move();
         void ReturnToSourceQueue();
 	    void MoveAll();

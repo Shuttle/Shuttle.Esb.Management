@@ -88,6 +88,15 @@ namespace Shuttle.Management.Messages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure that you would like to move all the messages from source queue &apos;{0}&apos; to destination queue &apos;{1}&apos;?.
+        /// </summary>
+        internal static string ConfirmMoveAll {
+            get {
+                return ResourceManager.GetString("ConfirmMoveAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not remove message with id &apos;{0}&apos; from queue &apos;{1}&apos;..
         /// </summary>
         internal static string CouldNotRemoveMessage {
@@ -173,11 +182,20 @@ namespace Shuttle.Management.Messages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No messages have been selected..
+        ///   Looks up a localized string similar to A total of {0} messages were moved from source queue &apos;{0}&apos; to destination queue &apos;{1}&apos;..
         /// </summary>
-        internal static string NoMessagesSelected {
+        internal static string MoveAllComplete {
             get {
-                return ResourceManager.GetString("NoMessagesSelected", resourceCulture);
+                return ResourceManager.GetString("MoveAllComplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No message is selected..
+        /// </summary>
+        internal static string NoMessageSelected {
+            get {
+                return ResourceManager.GetString("NoMessageSelected", resourceCulture);
             }
         }
         
@@ -191,7 +209,7 @@ namespace Shuttle.Management.Messages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Removed message with id &apos;{0}&apos; from queue &apos;{1}&apos;..
+        ///   Looks up a localized string similar to Acknowledged message with id &apos;{0}&apos; from queue &apos;{1}&apos;..
         /// </summary>
         internal static string RemovedMessage {
             get {
@@ -223,6 +241,15 @@ namespace Shuttle.Management.Messages {
         internal static string StoppedIgnoringMessage {
             get {
                 return ResourceManager.GetString("StoppedIgnoringMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Acknowledge.
+        /// </summary>
+        internal static string TextAcknowledge {
+            get {
+                return ResourceManager.GetString("TextAcknowledge", resourceCulture);
             }
         }
         

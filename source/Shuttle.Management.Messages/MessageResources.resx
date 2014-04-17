@@ -134,8 +134,8 @@
   <data name="TextMessages" xml:space="preserve">
     <value>Messages</value>
   </data>
-  <data name="NoMessagesSelected" xml:space="preserve">
-    <value>No messages have been selected.</value>
+  <data name="NoMessageSelected" xml:space="preserve">
+    <value>No message is selected.</value>
   </data>
   <data name="SourceQueueUriReader" xml:space="preserve">
     <value>Could not get the IQueueReader for the queue represented by the source queue uri.</value>
@@ -172,7 +172,7 @@
     <comment>{0} = message id, {1} = target queue uri</comment>
   </data>
   <data name="RemovedMessage" xml:space="preserve">
-    <value>Removed message with id '{0}' from queue '{1}'.</value>
+    <value>Acknowledged message with id '{0}' from queue '{1}'.</value>
     <comment>{0} = message id, {1} = source queue uri</comment>
   </data>
   <data name="Confirmation" xml:space="preserve">
@@ -204,5 +204,16 @@
   </data>
   <data name="TextMoveAll" xml:space="preserve">
     <value>Move all</value>
+  </data>
+  <data name="TextAcknowledge" xml:space="preserve">
+    <value>Acknowledge</value>
+  </data>
+  <data name="ConfirmMoveAll" xml:space="preserve">
+    <value>Are you sure that you would like to move all the messages from source queue '{0}' to destination queue '{1}'?</value>
+    <comment>{0} = source queue uri, {1} = destination queue uri</comment>
+  </data>
+  <data name="MoveAllComplete" xml:space="preserve">
+    <value>A total of {0} messages were moved from source queue '{0}' to destination queue '{1}'.</value>
+    <comment>{0} = total messages moved, {1} = source queue uri, {2} = destination queue uri</comment>
   </data>
 </root>
