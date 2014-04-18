@@ -6,22 +6,22 @@ using Shuttle.Core.Infrastructure;
 
 namespace Shuttle.Management.Shell
 {
-    public enum ShowQueueButtonPosition
-    {
-        NotShown = 0,
-        Left = 1,
-        Right = 2
-    }
+	public enum ShowQueueButtonPosition
+	{
+		NotShown = 0,
+		Left = 1,
+		Right = 2
+	}
 
-    public partial class QueueHierarchyView : UserControl, IQueueHierarchyView
-    {
-        private readonly Form _queueForm = new Form();
-        private readonly TreeView _queueTree = new TreeView();
+	public partial class QueueHierarchyView : UserControl, IQueueHierarchyView
+	{
+		private readonly Form _queueForm = new Form();
+		private readonly TreeView _queueTree = new TreeView();
 		private readonly Timer _timer = new Timer { Interval = 100 };
 
-        public QueueHierarchyView()
-        {
-            InitializeComponent();
+		public QueueHierarchyView()
+		{
+			InitializeComponent();
 
 			_timer.Tick += delegate
 			{
@@ -29,261 +29,270 @@ namespace Shuttle.Management.Shell
 
 				SelectedQueueUri.Focus();
 			};
-			
+
 			_queueTree.Dock = DockStyle.Fill;
-            _queueTree.Location = new Point(0, 20);
-            _queueTree.Name = "QueueTree";
-            _queueTree.Size = new Size(390, 250);
-            _queueTree.TabIndex = 0;
-            _queueTree.LostFocus += queueTree_LostFocus;
-            _queueTree.NodeMouseClick += queueTree_NodeMouseClick;
-            _queueTree.KeyDown += queueTree_KeyDown;
+			_queueTree.Location = new Point(0, 20);
+			_queueTree.Name = "QueueTree";
+			_queueTree.Size = new Size(390, 250);
+			_queueTree.TabIndex = 0;
+			_queueTree.LostFocus += queueTree_LostFocus;
+			_queueTree.NodeMouseClick += queueTree_NodeMouseClick;
+			_queueTree.KeyDown += queueTree_KeyDown;
 
-            _queueForm.Controls.Add(_queueTree);
-            _queueForm.FormBorderStyle = FormBorderStyle.None;
-            _queueForm.StartPosition = FormStartPosition.Manual;
-            _queueForm.ShowInTaskbar = false;
-            _queueForm.BackColor = SystemColors.Control;
-	        _queueForm.Deactivate += delegate
-		        {
-			        _timer.Start();
-		        };
+			_queueForm.Controls.Add(_queueTree);
+			_queueForm.FormBorderStyle = FormBorderStyle.None;
+			_queueForm.StartPosition = FormStartPosition.Manual;
+			_queueForm.ShowInTaskbar = false;
+			_queueForm.BackColor = SystemColors.Control;
+			_queueForm.Deactivate += delegate
+				{
+					_timer.Start();
+				};
 
-	        ShowQueuesButton.Click += ShowQueuesButtonClick;
-        }
+			ShowQueuesButton.Click += ShowQueuesButtonClick;
+		}
 
-        private void ShowQueuesButtonClick(object sender, EventArgs e)
-        {
-            ShowQueueForm();
-        }
+		private void ShowQueuesButtonClick(object sender, EventArgs e)
+		{
+			ShowQueueForm();
+		}
 
-        private ShowQueueButtonPosition showQueueButtonPosition;
+		private ShowQueueButtonPosition showQueueButtonPosition;
 
-        public ShowQueueButtonPosition ShowQueueButtonPosition
-        {
-            get { return showQueueButtonPosition; }
-            set
-            {
-                showQueueButtonPosition = value;
+		public ShowQueueButtonPosition ShowQueueButtonPosition
+		{
+			get { return showQueueButtonPosition; }
+			set
+			{
+				showQueueButtonPosition = value;
 
-                switch (showQueueButtonPosition)
-                {
-                    case ShowQueueButtonPosition.Left:
-                        {
-                            ShowQueuesButton.Visible = true;
-                            ShowQueuesButton.Dock = DockStyle.Left;
+				switch (showQueueButtonPosition)
+				{
+					case ShowQueueButtonPosition.Left:
+						{
+							ShowQueuesButton.Visible = true;
+							ShowQueuesButton.Dock = DockStyle.Left;
 
-                            break;
-                        }
-                    case ShowQueueButtonPosition.Right:
-                        {
-                            ShowQueuesButton.Visible = true;
-                            ShowQueuesButton.Dock = DockStyle.Right;
+							break;
+						}
+					case ShowQueueButtonPosition.Right:
+						{
+							ShowQueuesButton.Visible = true;
+							ShowQueuesButton.Dock = DockStyle.Right;
 
-                            break;
-                        }
-                    default:
-                        {
-                            ShowQueuesButton.Visible = false;
-                            break;
-                        }
-                }
-            }
-        }
+							break;
+						}
+					default:
+						{
+							ShowQueuesButton.Visible = false;
+							break;
+						}
+				}
+			}
+		}
 
-	    public event EventHandler<QueueSelectedEventArgs> QueueSelected = delegate { };
+		public event EventHandler<QueueSelectedEventArgs> QueueSelected = delegate { };
 
-        public void AddQueue(Uri uri)
-        {
-            Guard.AgainstNull(uri, "uri");
+		public void AddQueue(Uri uri)
+		{
+			Guard.AgainstNull(uri, "uri");
 
-            var scheme = _queueTree.Nodes.ContainsKey(uri.Scheme)
-                             ? _queueTree.Nodes[uri.Scheme]
-                             : _queueTree.Nodes.Add(uri.Scheme, uri.Scheme);
+			var scheme = _queueTree.Nodes.ContainsKey(uri.Scheme)
+							 ? _queueTree.Nodes[uri.Scheme]
+							 : _queueTree.Nodes.Add(uri.Scheme, uri.Scheme);
 
-            var host = scheme.Nodes.ContainsKey(uri.Host)
-                           ? scheme.Nodes[uri.Host]
-                           : scheme.Nodes.Add(uri.Host, uri.Host);
+			var host = scheme.Nodes.ContainsKey(uri.Host)
+						   ? scheme.Nodes[uri.Host]
+						   : scheme.Nodes.Add(uri.Host, uri.Host);
 
-            var localPath = uri.LocalPath.Replace("/", string.Empty);
+			var localPath = uri.LocalPath.Replace("/", string.Empty);
 
-            var key = Key(uri);
+			var key = Key(uri);
 
-            if (!host.Nodes.ContainsKey(key))
-            {
-                host.Nodes.Add(key, localPath).Tag = uri;
-            }
+			if (!host.Nodes.ContainsKey(key))
+			{
+				var userName = string.Empty;
 
-            _queueTree.Sort();
-            _queueTree.ExpandAll();
-        }
+				if (!string.IsNullOrEmpty(uri.UserInfo))
+				{
+					var colonPosition = uri.UserInfo.IndexOf(":", StringComparison.OrdinalIgnoreCase);
 
-        private static string Key(Uri uri)
-        {
-            return uri.ToString().ToLower();
-        }
+					userName = colonPosition > -1 ? uri.UserInfo.Substring(0, colonPosition) : uri.UserInfo;
+				}
 
-        public void AddQueue(string uri)
-        {
-            AddQueue(new Uri(uri));
-        }
+				host.Nodes.Add(key, string.Concat(localPath, string.IsNullOrEmpty(userName) ? string.Empty : string.Format(" [{0}]", userName))).Tag = uri;
+			}
 
-        public void Clear()
-        {
-            _queueTree.Nodes.Clear();
-        }
+			_queueTree.Sort();
+			_queueTree.ExpandAll();
+		}
 
-        public bool ContainsQueue(Uri uri)
-        {
-            Guard.AgainstNull(uri, "uri");
+		private static string Key(Uri uri)
+		{
+			return uri.ToString().ToLower();
+		}
 
-            return _queueTree.Nodes.Find(uri.ToString(), true).Length > 0;
-        }
+		public void AddQueue(string uri)
+		{
+			AddQueue(new Uri(uri));
+		}
 
-        public bool ContainsQueue(string uri)
-        {
-            return ContainsQueue(new Uri(uri));
-        }
+		public void Clear()
+		{
+			_queueTree.Nodes.Clear();
+		}
 
-        public bool RemoveQueue(Uri uri)
-        {
-            Guard.AgainstNull(uri, "uri");
+		public bool ContainsQueue(Uri uri)
+		{
+			Guard.AgainstNull(uri, "uri");
 
-            var node = FindQueueNode(uri);
+			return _queueTree.Nodes.Find(uri.ToString(), true).Length > 0;
+		}
 
-            if (node != null)
-            {
-                _queueTree.Nodes.Remove(node);
+		public bool ContainsQueue(string uri)
+		{
+			return ContainsQueue(new Uri(uri));
+		}
 
-                NormalizeTree();
-            }
+		public bool RemoveQueue(Uri uri)
+		{
+			Guard.AgainstNull(uri, "uri");
 
-            return node != null;
-        }
+			var node = FindQueueNode(uri);
 
-        private void NormalizeTree()
-        {
-            var node = FindChildlessNode(_queueTree.Nodes);
+			if (node != null)
+			{
+				_queueTree.Nodes.Remove(node);
 
-            while (node != null)
-            {
-                _queueTree.Nodes.Remove(node);
+				NormalizeTree();
+			}
 
-                node = FindChildlessNode(_queueTree.Nodes);
-            }
-        }
+			return node != null;
+		}
 
-        private static TreeNode FindChildlessNode(TreeNodeCollection nodes)
-        {
-            return nodes.Cast<TreeNode>().FirstOrDefault(node => node.Nodes.Count == 0);
-        }
+		private void NormalizeTree()
+		{
+			var node = FindChildlessNode(_queueTree.Nodes);
 
-        public override string Text
-        {
-            get { return SelectedQueueUri.Text; }
-            set { SelectedQueueUri.Text = value; }
-        }
+			while (node != null)
+			{
+				_queueTree.Nodes.Remove(node);
 
-        public bool RemoveQueue(string uri)
-        {
-            return RemoveQueue(new Uri(uri));
-        }
+				node = FindChildlessNode(_queueTree.Nodes);
+			}
+		}
 
-        private void queueTree_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-            NodeSelected(e.Node);
-        }
+		private static TreeNode FindChildlessNode(TreeNodeCollection nodes)
+		{
+			return nodes.Cast<TreeNode>().FirstOrDefault(node => node.Nodes.Count == 0);
+		}
 
-        private void NodeSelected(TreeNode node)
-        {
-            if (node == null || node.Tag == null)
-            {
-                return;
-            }
+		public override string Text
+		{
+			get { return SelectedQueueUri.Text; }
+			set { SelectedQueueUri.Text = value; }
+		}
 
-            SelectedQueueUri.Text = node.Tag.ToString();
+		public bool RemoveQueue(string uri)
+		{
+			return RemoveQueue(new Uri(uri));
+		}
 
-            HideQueueForm();
+		private void queueTree_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+		{
+			NodeSelected(e.Node);
+		}
+
+		private void NodeSelected(TreeNode node)
+		{
+			if (node == null || node.Tag == null)
+			{
+				return;
+			}
+
+			SelectedQueueUri.Text = node.Tag.ToString();
+
+			HideQueueForm();
 
 			QueueSelected.Invoke(this, new QueueSelectedEventArgs((Uri)node.Tag));
-        }
+		}
 
-        private void queueTree_KeyDown(object sender, KeyEventArgs e)
-        {
-            e.OnF4(HideQueueForm);
-            e.OnEscape(HideQueueForm);
-            e.OnEnterPressed(() => NodeSelected(_queueTree.SelectedNode));
-        }
+		private void queueTree_KeyDown(object sender, KeyEventArgs e)
+		{
+			e.OnF4(HideQueueForm);
+			e.OnEscape(HideQueueForm);
+			e.OnEnterPressed(() => NodeSelected(_queueTree.SelectedNode));
+		}
 
-        private void queueTree_LostFocus(object sender, EventArgs e)
-        {
-            HideQueueForm();
-        }
+		private void queueTree_LostFocus(object sender, EventArgs e)
+		{
+			HideQueueForm();
+		}
 
-        private void SelectedQueueUri_Click(object sender, EventArgs e)
-        {
-            HideQueueForm();
-        }
+		private void SelectedQueueUri_Click(object sender, EventArgs e)
+		{
+			HideQueueForm();
+		}
 
-        private void ShowQueueForm()
-        {
-            if (_queueForm.Visible)
-            {
-                return;
-            }
+		private void ShowQueueForm()
+		{
+			if (_queueForm.Visible)
+			{
+				return;
+			}
 
-            var rectangle = RectangleToScreen(ClientRectangle);
+			var rectangle = RectangleToScreen(ClientRectangle);
 
-            _queueForm.Location = rectangle.Y + SelectedQueueUri.Height + _queueForm.Height >
-                                 Screen.FromHandle(_queueForm.Handle).Bounds.Height
-                                     ? new Point(rectangle.X, rectangle.Y - _queueForm.Height)
-                                     : new Point(rectangle.X, rectangle.Y + SelectedQueueUri.Height);
+			_queueForm.Location = rectangle.Y + SelectedQueueUri.Height + _queueForm.Height >
+								 Screen.FromHandle(_queueForm.Handle).Bounds.Height
+									 ? new Point(rectangle.X, rectangle.Y - _queueForm.Height)
+									 : new Point(rectangle.X, rectangle.Y + SelectedQueueUri.Height);
 
-            _queueForm.Width = rectangle.Width;
-            _queueForm.Show();
-            _queueForm.BringToFront();
-        }
+			_queueForm.Width = rectangle.Width;
+			_queueForm.Show();
+			_queueForm.BringToFront();
+		}
 
-        private void HideQueueForm()
-        {
-            _queueForm.Hide();
-        }
+		private void HideQueueForm()
+		{
+			_queueForm.Hide();
+		}
 
-        private void ToggleQueueForm()
-        {
-            if (_queueForm.Visible)
-            {
-                HideQueueForm();
-            }
-            else
-            {
-                ShowQueueForm();
-            }
-        }
+		private void ToggleQueueForm()
+		{
+			if (_queueForm.Visible)
+			{
+				HideQueueForm();
+			}
+			else
+			{
+				ShowQueueForm();
+			}
+		}
 
-        private void SelectedQueueUri_KeyUp(object sender, KeyEventArgs e)
-        {
-            e.OnEnterPressed(() =>
-                                 {
-                                     Uri uri;
+		private void SelectedQueueUri_KeyUp(object sender, KeyEventArgs e)
+		{
+			e.OnEnterPressed(() =>
+								 {
+									 Uri uri;
 
-                                     if (Uri.TryCreate(SelectedQueueUri.Text, UriKind.Absolute, out uri))
-                                     {
-                                         QueueSelected.Invoke(this, new QueueSelectedEventArgs(uri));
-                                     }
-                                 });
-            e.OnKeyDown(ShowQueueForm);
-            e.OnF4(ToggleQueueForm);
-        }
+									 if (Uri.TryCreate(SelectedQueueUri.Text, UriKind.Absolute, out uri))
+									 {
+										 QueueSelected.Invoke(this, new QueueSelectedEventArgs(uri));
+									 }
+								 });
+			e.OnKeyDown(ShowQueueForm);
+			e.OnF4(ToggleQueueForm);
+		}
 
-        private TreeNode FindQueueNode(Uri uri)
-        {
-            var nodes = _queueTree.Nodes.Find(Key(uri), true);
+		private TreeNode FindQueueNode(Uri uri)
+		{
+			var nodes = _queueTree.Nodes.Find(Key(uri), true);
 
-            return nodes.Length > 0
-                       ? nodes[0]
-                       : null;
-        }
+			return nodes.Length > 0
+					   ? nodes[0]
+					   : null;
+		}
 
 		protected override void Dispose(bool disposing)
 		{
