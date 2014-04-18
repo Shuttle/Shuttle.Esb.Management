@@ -97,6 +97,15 @@ namespace Shuttle.Management.Messages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure that you would like to return all the messages from source queue &apos;{0}&apos; to their respective recipient queue?.
+        /// </summary>
+        internal static string ConfirmReturnAllToSourceQueue {
+            get {
+                return ResourceManager.GetString("ConfirmReturnAllToSourceQueue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not remove message with id &apos;{0}&apos; from queue &apos;{1}&apos;..
         /// </summary>
         internal static string CouldNotRemoveMessage {
@@ -182,7 +191,7 @@ namespace Shuttle.Management.Messages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A total of {0} messages were moved from source queue &apos;{0}&apos; to destination queue &apos;{1}&apos;..
+        ///   Looks up a localized string similar to A total of {0} messages were moved from source queue &apos;{1}&apos; to destination queue &apos;{2}&apos;..
         /// </summary>
         internal static string MoveAllComplete {
             get {
@@ -214,6 +223,15 @@ namespace Shuttle.Management.Messages {
         internal static string RemovedMessage {
             get {
                 return ResourceManager.GetString("RemovedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A total of {0} messages were returned from source queue &apos;{1}&apos; to their respective recipient queue..
+        /// </summary>
+        internal static string ReturnAllToSourceQueueComplete {
+            get {
+                return ResourceManager.GetString("ReturnAllToSourceQueueComplete", resourceCulture);
             }
         }
         

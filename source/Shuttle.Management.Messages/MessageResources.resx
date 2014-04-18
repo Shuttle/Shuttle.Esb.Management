@@ -213,7 +213,15 @@
     <comment>{0} = source queue uri, {1} = destination queue uri</comment>
   </data>
   <data name="MoveAllComplete" xml:space="preserve">
-    <value>A total of {0} messages were moved from source queue '{0}' to destination queue '{1}'.</value>
+    <value>A total of {0} messages were moved from source queue '{1}' to destination queue '{2}'.</value>
     <comment>{0} = total messages moved, {1} = source queue uri, {2} = destination queue uri</comment>
+  </data>
+  <data name="ConfirmReturnAllToSourceQueue" xml:space="preserve">
+    <value>Are you sure that you would like to return all the messages from source queue '{0}' to their respective recipient queue?</value>
+    <comment>{0} = source queue</comment>
+  </data>
+  <data name="ReturnAllToSourceQueueComplete" xml:space="preserve">
+    <value>A total of {0} messages were returned from source queue '{1}' to their respective recipient queue.</value>
+    <comment>{0} = total messages returned</comment>
   </data>
 </root>
