@@ -15,27 +15,27 @@ namespace Shuttle.Management.Shell
 
     public partial class QueueHierarchyView : UserControl, IQueueHierarchyView
     {
-        private readonly Form queueForm = new Form();
-        private readonly TreeView queueTree = new TreeView();
+        private readonly Form _queueForm = new Form();
+        private readonly TreeView _queueTree = new TreeView();
 
         public QueueHierarchyView()
         {
             InitializeComponent();
 
-            queueTree.Dock = DockStyle.Fill;
-            queueTree.Location = new Point(0, 20);
-            queueTree.Name = "QueueTree";
-            queueTree.Size = new Size(390, 250);
-            queueTree.TabIndex = 0;
-            queueTree.LostFocus += queueTree_LostFocus;
-            queueTree.NodeMouseClick += queueTree_NodeMouseClick;
-            queueTree.KeyDown += queueTree_KeyDown;
+            _queueTree.Dock = DockStyle.Fill;
+            _queueTree.Location = new Point(0, 20);
+            _queueTree.Name = "QueueTree";
+            _queueTree.Size = new Size(390, 250);
+            _queueTree.TabIndex = 0;
+            _queueTree.LostFocus += queueTree_LostFocus;
+            _queueTree.NodeMouseClick += queueTree_NodeMouseClick;
+            _queueTree.KeyDown += queueTree_KeyDown;
 
-            queueForm.Controls.Add(queueTree);
-            queueForm.FormBorderStyle = FormBorderStyle.None;
-            queueForm.StartPosition = FormStartPosition.Manual;
-            queueForm.ShowInTaskbar = false;
-            queueForm.BackColor = SystemColors.Control;
+            _queueForm.Controls.Add(_queueTree);
+            _queueForm.FormBorderStyle = FormBorderStyle.None;
+            _queueForm.StartPosition = FormStartPosition.Manual;
+            _queueForm.ShowInTaskbar = false;
+            _queueForm.BackColor = SystemColors.Control;
 
             ShowQueuesButton.Click += ShowQueuesButtonClick;
         }
@@ -85,9 +85,9 @@ namespace Shuttle.Management.Shell
         {
             Guard.AgainstNull(uri, "uri");
 
-            var scheme = queueTree.Nodes.ContainsKey(uri.Scheme)
-                             ? queueTree.Nodes[uri.Scheme]
-                             : queueTree.Nodes.Add(uri.Scheme, uri.Scheme);
+            var scheme = _queueTree.Nodes.ContainsKey(uri.Scheme)
+                             ? _queueTree.Nodes[uri.Scheme]
+                             : _queueTree.Nodes.Add(uri.Scheme, uri.Scheme);
 
             var host = scheme.Nodes.ContainsKey(uri.Host)
                            ? scheme.Nodes[uri.Host]
@@ -102,8 +102,8 @@ namespace Shuttle.Management.Shell
                 host.Nodes.Add(key, localPath).Tag = uri;
             }
 
-            queueTree.Sort();
-            queueTree.ExpandAll();
+            _queueTree.Sort();
+            _queueTree.ExpandAll();
         }
 
         private static string Key(Uri uri)
@@ -118,14 +118,14 @@ namespace Shuttle.Management.Shell
 
         public void Clear()
         {
-            queueTree.Nodes.Clear();
+            _queueTree.Nodes.Clear();
         }
 
         public bool ContainsQueue(Uri uri)
         {
             Guard.AgainstNull(uri, "uri");
 
-            return queueTree.Nodes.Find(uri.ToString(), true).Length > 0;
+            return _queueTree.Nodes.Find(uri.ToString(), true).Length > 0;
         }
 
         public bool ContainsQueue(string uri)
@@ -141,7 +141,7 @@ namespace Shuttle.Management.Shell
 
             if (node != null)
             {
-                queueTree.Nodes.Remove(node);
+                _queueTree.Nodes.Remove(node);
 
                 NormalizeTree();
             }
@@ -151,13 +151,13 @@ namespace Shuttle.Management.Shell
 
         private void NormalizeTree()
         {
-            var node = FindChildlessNode(queueTree.Nodes);
+            var node = FindChildlessNode(_queueTree.Nodes);
 
             while (node != null)
             {
-                queueTree.Nodes.Remove(node);
+                _queueTree.Nodes.Remove(node);
 
-                node = FindChildlessNode(queueTree.Nodes);
+                node = FindChildlessNode(_queueTree.Nodes);
             }
         }
 
@@ -193,14 +193,14 @@ namespace Shuttle.Management.Shell
 
             HideQueueForm();
 
-            QueueSelected.Invoke(this, new QueueSelectedEventArgs((Uri)node.Tag));
+			QueueSelected.Invoke(this, new QueueSelectedEventArgs((Uri)node.Tag));
         }
 
         private void queueTree_KeyDown(object sender, KeyEventArgs e)
         {
             e.OnF4(HideQueueForm);
             e.OnEscape(HideQueueForm);
-            e.OnEnterPressed(() => NodeSelected(queueTree.SelectedNode));
+            e.OnEnterPressed(() => NodeSelected(_queueTree.SelectedNode));
         }
 
         private void queueTree_LostFocus(object sender, EventArgs e)
@@ -215,31 +215,31 @@ namespace Shuttle.Management.Shell
 
         private void ShowQueueForm()
         {
-            if (queueForm.Visible)
+            if (_queueForm.Visible)
             {
                 return;
             }
 
             var rectangle = RectangleToScreen(ClientRectangle);
 
-            queueForm.Location = rectangle.Y + SelectedQueueUri.Height + queueForm.Height >
-                                 Screen.FromHandle(queueForm.Handle).Bounds.Height
-                                     ? new Point(rectangle.X, rectangle.Y - queueForm.Height)
+            _queueForm.Location = rectangle.Y + SelectedQueueUri.Height + _queueForm.Height >
+                                 Screen.FromHandle(_queueForm.Handle).Bounds.Height
+                                     ? new Point(rectangle.X, rectangle.Y - _queueForm.Height)
                                      : new Point(rectangle.X, rectangle.Y + SelectedQueueUri.Height);
 
-            queueForm.Width = rectangle.Width;
-            queueForm.Show();
-            queueForm.BringToFront();
+            _queueForm.Width = rectangle.Width;
+            _queueForm.Show();
+            _queueForm.BringToFront();
         }
 
         private void HideQueueForm()
         {
-            queueForm.Visible = false;
+            _queueForm.Visible = false;
         }
 
         private void ToggleQueueForm()
         {
-            if (queueForm.Visible)
+            if (_queueForm.Visible)
             {
                 HideQueueForm();
             }
@@ -266,11 +266,21 @@ namespace Shuttle.Management.Shell
 
         private TreeNode FindQueueNode(Uri uri)
         {
-            var nodes = queueTree.Nodes.Find(Key(uri), true);
+            var nodes = _queueTree.Nodes.Find(Key(uri), true);
 
             return nodes.Length > 0
                        ? nodes[0]
                        : null;
         }
-    }
+
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing && (components != null))
+			{
+				components.Dispose();
+			}
+			base.Dispose(disposing);
+		}
+
+	}
 }

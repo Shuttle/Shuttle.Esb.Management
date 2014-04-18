@@ -7,32 +7,32 @@ namespace Shuttle.Management.Shell
 {
 	public class ManagementShellPresenter : IManagementShellPresenter
 	{
-		private readonly IManagementShellView view;
-		private readonly TaskQueue taskQueue;
-		private readonly IManagementConfiguration managementConfiguration;
-		private readonly List<IManagementModulePresenter> presenters = new List<IManagementModulePresenter>();
+		private readonly IManagementShellView _view;
+		private readonly TaskQueue _taskQueue;
+		private readonly IManagementConfiguration _managementConfiguration;
+		private readonly List<IManagementModulePresenter> _presenters = new List<IManagementModulePresenter>();
 
 		public ManagementShellPresenter(IManagementShellView view)
 		{
-			this.view = view;
+			_view = view;
 
-			taskQueue = new TaskQueue();
+			_taskQueue = new TaskQueue();
 
 			ActionAppender.Register(view.LogMessage);
 
-			managementConfiguration = new ManagementConfiguration();
+			_managementConfiguration = new ManagementConfiguration();
 
-			managementConfiguration.Initialize();
+			_managementConfiguration.Initialize();
 		}
 
 		public void Dispose()
 		{
-			foreach (var presenter in presenters)
+			foreach (var presenter in _presenters)
 			{
 				presenter.AttemptDispose();
 			}
 
-			taskQueue.Dispose();
+			_taskQueue.Dispose();
 		}
 
 		public void OnViewReady()
@@ -51,16 +51,16 @@ namespace Shuttle.Management.Shell
 				{
 				    var module = ((IManagementModule) Activator.CreateInstance(type));
 
-				    module.Configure(managementConfiguration);
+				    module.Configure(_managementConfiguration);
 
                     foreach (ManagementModulePresenter presenter in module.Presenters)
 				    {
-                        presenter.TaskQueue = taskQueue;
-                        presenter.ManagementConfiguration = managementConfiguration;
+                        presenter.TaskQueue = _taskQueue;
+                        presenter.ManagementConfiguration = _managementConfiguration;
 
-                        view.AddManagementModulePresenter(presenter);
+                        _view.AddManagementModulePresenter(presenter);
 
-                        presenters.Add(presenter);
+                        _presenters.Add(presenter);
                     }
                 }
 			}

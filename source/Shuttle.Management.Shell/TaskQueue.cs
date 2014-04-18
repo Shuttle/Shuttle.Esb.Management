@@ -7,59 +7,62 @@ namespace Shuttle.Management.Shell
 {
 	public class TaskQueue : IDisposable, IActiveState
 	{
-		private readonly object padlock = new object();
-		private readonly Queue<QueuedTask> tasks = new Queue<QueuedTask>();
-		private readonly Thread thread;
-		private volatile bool active;
+		private readonly object _padlock = new object();
+		private readonly Queue<QueuedTask> _tasks = new Queue<QueuedTask>();
+		private readonly Thread _thread;
+		private volatile bool _active;
+		private readonly ILog _log;
 
 		public TaskQueue()
 		{
-			Log.Debug("Starting TaskQueue.");
+			_log = Log.For(this);
 
-			active = true;
+			_log.Debug("Starting TaskQueue.");
 
-			thread = new Thread(ProcessQueuedActions);
+			_active = true;
 
-			thread.Start();
+			_thread = new Thread(ProcessQueuedActions);
 
-			while (!thread.IsAlive)
+			_thread.Start();
+
+			while (!_thread.IsAlive)
 			{
 			}
 
-			Log.Debug("TaskQueue Started.");
+			_log.Debug("TaskQueue Started.");
 		}
 
 		public void QueueTask(string name, Action action)
 		{
-			lock (padlock)
+			lock (_padlock)
 			{
-				Log.Information(string.Format(ManagementResources.TaskQueued, name));
+				_log.Information(string.Format(ManagementResources.TaskQueued, name));
 
-				tasks.Enqueue(new QueuedTask(name, action));
+				_tasks.Enqueue(new QueuedTask(name, action));
 			}
 		}
 
 		private void ProcessQueuedActions()
 		{
-			while (active)
+			while (_active)
 			{
 				QueuedTask task = null;
 
-				lock (padlock)
+				lock (_padlock)
 				{
-					if (tasks.Count > 0)
+					if (_tasks.Count > 0)
 					{
-						task = tasks.Dequeue();
+						task = _tasks.Dequeue();
 					}
 				}
 
 				if (task != null)
 				{
-					Log.Information(string.Format(ManagementResources.RunningTask, task.Name));
+					_log.Information(string.Format(ManagementResources.RunningTask, task.Name));
 
 					ExceptionWrapper(task.Action);
 
-					Log.Information(string.Format(ManagementResources.TaskCompleted, task.Name));
+					_log.Information(string.Format(ManagementResources.TaskCompleted, task.Name));
 				}
 
 				if (task == null)
@@ -69,7 +72,7 @@ namespace Shuttle.Management.Shell
 			}
 		}
 
-		private static void ExceptionWrapper(Action action)
+		private void ExceptionWrapper(Action action)
 		{
 			try
 			{
@@ -77,7 +80,7 @@ namespace Shuttle.Management.Shell
 			}
 			catch (Exception exception)
 			{
-				Log.Error(exception.CompactMessages());
+				_log.Error(exception.CompactMessages());
 			}
 		}
 
@@ -95,20 +98,20 @@ namespace Shuttle.Management.Shell
 
 		public void Dispose()
 		{
-			Log.Debug("Deactivating TaskQueue.");
+			_log.Debug("Deactivating TaskQueue.");
 
-			active = false;
+			_active = false;
 
-			Log.Debug("Joinging UI thread.");
+			_log.Debug("Joining UI thread.");
 
-			thread.Join(TimeSpan.FromSeconds(5));
+			_thread.Join(TimeSpan.FromSeconds(5));
 
-			Log.Debug("TaskQueue disposing.");
+			_log.Debug("TaskQueue disposing.");
 		}
 
 		public bool Active
 		{
-			get { return active; }
+			get { return _active; }
 		}
 	}
 }

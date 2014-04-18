@@ -116,9 +116,7 @@
       <DependentUpon>ManagementShellView.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QueueHierarchy\IQueueHierarchyPresenter.cs" />
     <Compile Include="QueueHierarchy\IQueueHierarchyView.cs" />
-    <Compile Include="QueueHierarchy\QueueHierarchyPresenter.cs" />
     <Compile Include="QueueHierarchy\QueueHierarchyView.cs">
       <SubType>UserControl</SubType>
     </Compile>

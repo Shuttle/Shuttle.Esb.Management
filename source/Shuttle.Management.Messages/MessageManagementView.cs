@@ -85,9 +85,9 @@ namespace Shuttle.Management.Messages
 			this.Invoke(() => MessageView.Clear());
 		}
 
-        private void SourceQueueUri_QueueSelected(object sender, QueueSelectedEventArgs e)
-        {
-            presenter.GetMessage();
-        }
+		private void SourceQueueUri_QueueSelected(object sender, QueueSelectedEventArgs e)
+		{
+			this.Invoke(() => presenter.GetMessage());
+		}
 	}
 }

@@ -8,7 +8,7 @@ using Shuttle.Management.Shell;
 
 namespace Shuttle.Management.Messages
 {
-	public class MessageManagementPresenter : ManagementModulePresenter, IMessageManagementPresenter
+	public class MessageManagementPresenter : ManagementModulePresenter, IMessageManagementPresenter, IDisposable
 	{
 		private class SelectedMessage
 		{
@@ -272,7 +272,6 @@ namespace Shuttle.Management.Messages
 							  return;
 						  }
 
-						  TransportMessage transportMessage = null;
 						  object message = null;
 						  var receivedMessage = queue.GetMessage();
 
@@ -283,7 +282,7 @@ namespace Shuttle.Management.Messages
 							  return;
 						  }
 
-						  transportMessage = (TransportMessage) _serializer.Deserialize(typeof (TransportMessage), receivedMessage.Stream);
+						  var transportMessage = (TransportMessage) _serializer.Deserialize(typeof (TransportMessage), receivedMessage.Stream);
 
 						  _selectedMessage = new SelectedMessage(sourceQueueUri, receivedMessage, transportMessage);
 
@@ -360,6 +359,14 @@ namespace Shuttle.Management.Messages
 		protected bool HasSelectedMessage
 		{
 			get { return _selectedMessage != null; }
+		}
+
+		public void Dispose()
+		{
+			if (_queueManager != null)
+			{
+				_queueManager.AttemptDispose();
+			}
 		}
 	}
 }
