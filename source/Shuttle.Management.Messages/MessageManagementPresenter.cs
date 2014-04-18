@@ -91,10 +91,10 @@ namespace Shuttle.Management.Messages
 
 							  queue.Acknowledge(_selectedMessage.ReceivedMessage.AcknowledgementToken);
 
-							  _selectedMessage = null;
-						  });
+							  ClearSelectedMessage();
 
-			GetMessage();
+							  GetMessage();
+						  });
 		}
 
 		public void Move()
@@ -223,33 +223,30 @@ namespace Shuttle.Management.Messages
 
 		public void StopIgnoring()
 		{
-			var sourceQueueUriValue = _view.SourceQueueUriValue;
+			if (!HasSelectedMessage)
+			{
+				return;
+			}
 
 			QueueTask("StopIgnoring",
 					  () =>
 					  {
-						  // TODO: FIX
+						  var source = _queueManager.GetQueue(_selectedMessage.SourceQueueUri);
 
-						  //var source = _queueManager.GetQueue(sourceQueueUriValue);
+						  _selectedMessage.TransportMessage.StopIgnoring();
 
-						  //foreach (var message in _view.SelectedMessages)
-						  //{
-						  //	message.StopIgnoring();
+						  source.Enqueue(_selectedMessage.TransportMessage.MessageId, _serializer.Serialize(_selectedMessage.TransportMessage));
+						  source.Acknowledge(_selectedMessage.ReceivedMessage.AcknowledgementToken);
 
-						  //	using (var scope = new TransactionScope())
-						  //	{
-						  //		if (source.Acknowledge(message.MessageId))
-						  //		{
-						  //			source.Enqueue(message.MessageId, _serializer.Serialize(message));
-						  //		}
+						  ClearSelectedMessage();
 
-						  //		scope.Complete();
-						  //	}
-
-						  //	_log.Information(string.Format(MessageResources.StoppedIgnoringMessage,
-						  //								  message.MessageId));
-						  //}
+						  GetMessage();
 					  });
+		}
+
+		private void ClearSelectedMessage()
+		{
+			_selectedMessage = null;
 		}
 
 		public void ReturnAllToSourceQueue()
@@ -356,7 +353,7 @@ namespace Shuttle.Management.Messages
 
 							  queue.Release(_selectedMessage.ReceivedMessage.AcknowledgementToken);
 
-							  _selectedMessage = null;
+							  ClearSelectedMessage();
 						  });
 		}
 
