@@ -17,12 +17,20 @@ namespace Shuttle.Management.Shell
     {
         private readonly Form _queueForm = new Form();
         private readonly TreeView _queueTree = new TreeView();
+		private readonly Timer _timer = new Timer { Interval = 100 };
 
         public QueueHierarchyView()
         {
             InitializeComponent();
 
-            _queueTree.Dock = DockStyle.Fill;
+			_timer.Tick += delegate
+			{
+				_timer.Stop();
+
+				SelectedQueueUri.Focus();
+			};
+			
+			_queueTree.Dock = DockStyle.Fill;
             _queueTree.Location = new Point(0, 20);
             _queueTree.Name = "QueueTree";
             _queueTree.Size = new Size(390, 250);
@@ -36,8 +44,12 @@ namespace Shuttle.Management.Shell
             _queueForm.StartPosition = FormStartPosition.Manual;
             _queueForm.ShowInTaskbar = false;
             _queueForm.BackColor = SystemColors.Control;
+	        _queueForm.Deactivate += delegate
+		        {
+			        _timer.Start();
+		        };
 
-            ShowQueuesButton.Click += ShowQueuesButtonClick;
+	        ShowQueuesButton.Click += ShowQueuesButtonClick;
         }
 
         private void ShowQueuesButtonClick(object sender, EventArgs e)
@@ -79,7 +91,7 @@ namespace Shuttle.Management.Shell
             }
         }
 
-        public event EventHandler<QueueSelectedEventArgs> QueueSelected = delegate { };
+	    public event EventHandler<QueueSelectedEventArgs> QueueSelected = delegate { };
 
         public void AddQueue(Uri uri)
         {
@@ -234,7 +246,7 @@ namespace Shuttle.Management.Shell
 
         private void HideQueueForm()
         {
-            _queueForm.Visible = false;
+            _queueForm.Hide();
         }
 
         private void ToggleQueueForm()
