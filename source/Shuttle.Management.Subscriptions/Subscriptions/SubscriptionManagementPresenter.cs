@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -6,7 +5,6 @@ using System.Linq;
 using System.Windows.Forms;
 using Shuttle.Core.Data;
 using Shuttle.Core.Infrastructure;
-using Shuttle.ESB.Core;
 using Shuttle.Management.Shell;
 
 namespace Shuttle.Management.Subscriptions
@@ -20,7 +18,9 @@ namespace Shuttle.Management.Subscriptions
 
 		private readonly ISubscriptionManagementView view;
 
-		public SubscriptionManagementPresenter(IDatabaseGateway databaseGateway, IDatabaseConnectionFactory databaseConnectionFactory, ISubscriptionQuery subscriptionQuery, IReflectionService reflectionService)
+		public SubscriptionManagementPresenter(IDatabaseGateway databaseGateway,
+		                                       IDatabaseConnectionFactory databaseConnectionFactory,
+		                                       ISubscriptionQuery subscriptionQuery, IReflectionService reflectionService)
 		{
 			view = new SubscriptionManagementView(this);
 
@@ -66,19 +66,19 @@ namespace Shuttle.Management.Subscriptions
 			}
 
 			QueueTask("RefreshSubscriptions",
-					  () =>
-					  {
-						  view.ClearSubscriptions();
+			          () =>
+				          {
+					          view.ClearSubscriptions();
 
-						  var dataSource = DataSourceFactory.Create(dataStoreName);
+					          var dataSource = DataSourceFactory.Create(dataStoreName);
 
-						  using (databaseConnectionFactory.Create(dataSource))
-							  foreach (DataRow row in
-								  subscriptionQuery.MessageTypes(dataSource, inboxWorkQueueUriValue).Rows)
-							  {
-								  view.AddSubscription(SubscriptionColumns.MessageType.MapFrom(row));
-							  }
-					  });
+					          using (databaseConnectionFactory.Create(dataSource))
+						          foreach (DataRow row in
+							          subscriptionQuery.MessageTypes(dataSource, inboxWorkQueueUriValue).Rows)
+						          {
+							          view.AddSubscription(SubscriptionColumns.MessageType.MapFrom(row));
+						          }
+				          });
 		}
 
 		public override void OnViewReady()
@@ -115,23 +115,23 @@ namespace Shuttle.Management.Subscriptions
 			}
 
 			QueueTask("AddSubscriptions",
-					  () =>
-					  {
-						  var source = DataSourceFactory.Create(dataStoreName);
+			          () =>
+				          {
+					          var source = DataSourceFactory.Create(dataStoreName);
 
-						  using (databaseConnectionFactory.Create(source))
-						  {
-							  foreach (var messageType in view.SelectedMessageTypes)
-							  {
-								  if (subscriptionQuery.Contains(source, inboxWorkQueueUri, messageType)) 
-								  {
-									  continue;
-								  }
+					          using (databaseConnectionFactory.Create(source))
+					          {
+						          foreach (var messageType in view.SelectedMessageTypes)
+						          {
+							          if (subscriptionQuery.Contains(source, inboxWorkQueueUri, messageType))
+							          {
+								          continue;
+							          }
 
-								  subscriptionQuery.Add(source, inboxWorkQueueUri, messageType);
-							  }
-						  }
-					  });
+							          subscriptionQuery.Add(source, inboxWorkQueueUri, messageType);
+						          }
+					          }
+				          });
 
 			RefreshSubscriptions();
 		}
@@ -154,9 +154,9 @@ namespace Shuttle.Management.Subscriptions
 		public void ShowAssemblyTypes(string fileName)
 		{
 			QueueTask("ShowAssemblyTypes",
-					  () =>
-					  view.PopulateEventTypes(
-						reflectionService.GetTypes(reflectionService.GetAssembly(fileName))));
+			          () =>
+			          view.PopulateEventTypes(
+				          reflectionService.GetTypes(reflectionService.GetAssembly(fileName))));
 		}
 
 		public void RefreshSubscribers()
@@ -164,29 +164,29 @@ namespace Shuttle.Management.Subscriptions
 			var dataStoreName = view.DataStoreValue;
 
 			QueueTask("RefreshSubscribers",
-					  () =>
-					  {
-						  var uris = new List<string>();
+			          () =>
+				          {
+					          var uris = new List<string>();
 
-						  if (!string.IsNullOrEmpty(dataStoreName))
-						  {
-							  var dataSource = DataSourceFactory.Create(dataStoreName);
+					          if (!string.IsNullOrEmpty(dataStoreName))
+					          {
+						          var dataSource = DataSourceFactory.Create(dataStoreName);
 
-							  using (databaseConnectionFactory.Create(dataSource))
-							  {
-								  uris.AddRange(from DataRow row in subscriptionQuery.AllUris(dataSource).Rows
-												select SubscriptionColumns.InboxWorkQueueUri.MapFrom(row));
-							  }
-						  }
+						          using (databaseConnectionFactory.Create(dataSource))
+						          {
+							          uris.AddRange(from DataRow row in subscriptionQuery.AllUris(dataSource).Rows
+							                        select SubscriptionColumns.InboxWorkQueueUri.MapFrom(row));
+						          }
+					          }
 
-						  uris.AddRange(from Queue queue in ManagementConfiguration.QueueRepository().All()
-										where !uris.Contains(queue.Uri)
-										select queue.Uri);
+					          uris.AddRange(from Queue queue in ManagementConfiguration.QueueRepository().All()
+					                        where !uris.Contains(queue.Uri)
+					                        select queue.Uri);
 
-						  uris.Sort();
+					          uris.Sort();
 
-						  view.PopulateSubscriberUris(uris);
-					  });
+					          view.PopulateSubscriberUris(uris);
+				          });
 
 			RefreshSubscriptions();
 		}
@@ -211,24 +211,27 @@ namespace Shuttle.Management.Subscriptions
 				return;
 			}
 
-			if (MessageBox.Show(string.Format(ManagementResources.ConfirmRemoval, SubscriptionResources.TextSubscriptions), ManagementResources.Confirmation, MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+			if (
+				MessageBox.Show(string.Format(ManagementResources.ConfirmRemoval, SubscriptionResources.TextSubscriptions),
+				                ManagementResources.Confirmation, MessageBoxButtons.YesNo, MessageBoxIcon.Question) !=
+				DialogResult.Yes)
 			{
 				return;
 			}
 
 			QueueTask("RemoveSubscriptions",
-					  () =>
-					  {
-						  var source = DataSourceFactory.Create(dataStoreName);
+			          () =>
+				          {
+					          var source = DataSourceFactory.Create(dataStoreName);
 
-						  using (databaseConnectionFactory.Create(source))
-						  {
-							  foreach (var messageType in view.SelectedSubscriptions)
-							  {
-								  subscriptionQuery.Remove(source, inboxWorkQueueUri, messageType);
-							  }
-						  }
-					  }
+					          using (databaseConnectionFactory.Create(source))
+					          {
+						          foreach (var messageType in view.SelectedSubscriptions)
+						          {
+							          subscriptionQuery.Remove(source, inboxWorkQueueUri, messageType);
+						          }
+					          }
+				          }
 				);
 
 			RefreshSubscriptions();
@@ -266,7 +269,7 @@ namespace Shuttle.Management.Subscriptions
 		{
 			get
 			{
-				var control = (UserControl)view;
+				var control = (UserControl) view;
 
 				control.Enabled = ManagementConfiguration.HasDataStoreRepository;
 

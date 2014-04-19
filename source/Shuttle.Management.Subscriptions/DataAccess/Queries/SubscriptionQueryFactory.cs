@@ -2,7 +2,7 @@
 
 namespace Shuttle.Management.Subscriptions
 {
-	internal class SubscriptionQueryFactory : ISubscriptionQueryFactory
+	public class SubscriptionQueryFactory : ISubscriptionQueryFactory
 	{
 		public IQuery All()
 		{
@@ -26,7 +26,7 @@ order by
 		{
 			return RawQuery.Create(@"
 select 
-	[MessageType],
+	[MessageType]
 from
 	[SubscriberMessageType]
 where
