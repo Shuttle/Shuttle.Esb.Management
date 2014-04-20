@@ -1,41 +1,39 @@
 using System.Collections.Generic;
 using Castle.MicroKernel.Registration;
-using Castle.MicroKernel.Resolvers.SpecializedResolvers;
 using Castle.Windsor;
 using Shuttle.Core.Data;
-using Shuttle.Core.Data.Castle;
 using Shuttle.Core.Infrastructure;
 using Shuttle.Management.Shell;
 
 namespace Shuttle.Management.Subscriptions
 {
-    public class SubscriptionsManagementModule : IManagementModule
-    {
-        private readonly WindsorContainer container = new WindsorContainer();
+	public class SubscriptionsManagementModule : IManagementModule
+	{
+		private readonly WindsorContainer container = new WindsorContainer();
 
-        public void Configure(IManagementConfiguration managementConfiguration)
-        {
-            if (!managementConfiguration.HasDataStoreRepository)
-            {
-                Log.Warning(string.Format(ManagementResources.DataStoreRepositoryRequired,
-                                          "Shuttle.Management.Subscriptions"));
-            }
+		public void Configure(IManagementConfiguration managementConfiguration)
+		{
+			if (!managementConfiguration.HasDataStoreRepository)
+			{
+				Log.Warning(string.Format(ManagementResources.DataStoreRepositoryRequired,
+				                          "Shuttle.Management.Subscriptions"));
+			}
 
-            container.Register(Component.For<IReflectionService>()
-                                   .ImplementedBy<ReflectionService>());
+			container.Register(Component.For<IReflectionService>()
+			                            .ImplementedBy<ReflectionService>());
 
-            container.Register(Component.For<IDatabaseConnectionCache>()
-                                   .ImplementedBy<ThreadStaticDatabaseConnectionCache>());
+			container.Register(Component.For<IDatabaseConnectionCache>()
+			                            .ImplementedBy<ThreadStaticDatabaseConnectionCache>());
 
-            container.Register(Component.For<IDbConnectionConfiguration>()
-                                   .ImplementedBy<DbConnectionConfiguration>());
+			container.Register(Component.For<IDbConnectionConfiguration>()
+			                            .ImplementedBy<DbConnectionConfiguration>());
 
-            container.Register(Component.For<IDbConnectionConfigurationProvider>()
-                                   .ImplementedBy<ManagementDbConnectionConfigurationProvider>());
+			container.Register(Component.For<IDbConnectionConfigurationProvider>()
+			                            .ImplementedBy<ManagementDbConnectionConfigurationProvider>());
 
 			container.Register(Component.For<IDatabaseGateway>().ImplementedBy<DatabaseGateway>());
 			container.Register(Component.For<IDatabaseConnectionFactory>().ImplementedBy<DatabaseConnectionFactory>());
-			container.Register(Component.For(typeof(IDataRepository<>)).ImplementedBy(typeof(DataRepository<>)));
+			container.Register(Component.For(typeof (IDataRepository<>)).ImplementedBy(typeof (DataRepository<>)));
 
 			container.Register(
 				Classes
@@ -43,12 +41,12 @@ namespace Shuttle.Management.Subscriptions
 					.Pick()
 					.If(type => type.Name.EndsWith("Factory"))
 					.Configure(configurer => configurer.Named(configurer.Implementation.Name.ToLower()))
-					.WithService.Select((type, basetype) => new[] { type.InterfaceMatching(RegexPatterns.EndsWith("Factory")) }));
+					.WithService.Select((type, basetype) => new[] {type.InterfaceMatching(RegexPatterns.EndsWith("Factory"))}));
 
 			container.Register(
 				Classes
 					.FromThisAssembly()
-					.BasedOn(typeof(IDataRowMapper<>))
+					.BasedOn(typeof (IDataRowMapper<>))
 					.WithServiceFirstInterface());
 
 			container.Register(
@@ -73,10 +71,8 @@ namespace Shuttle.Management.Subscriptions
 					.WithServiceFirstInterface());
 
 
-            ((ManagementDbConnectionConfigurationProvider) container.Resolve<IDbConnectionConfigurationProvider>())
-                .AddProvider(new DataStoreDbConnectionConfigurationProvider(managementConfiguration));
-
-            container.RegisterDataAccess("Shuttle.Management.Subscriptions");
+			((ManagementDbConnectionConfigurationProvider) container.Resolve<IDbConnectionConfigurationProvider>())
+				.AddProvider(new DataStoreDbConnectionConfigurationProvider(managementConfiguration));
 
 			container.Register(
 				Classes
@@ -85,12 +81,9 @@ namespace Shuttle.Management.Subscriptions
 					.WithServiceAllInterfaces());
 		}
 
-        public IEnumerable<IManagementModulePresenter> Presenters
-        {
-	        get
-	        {
-		        return container.ResolveAll<IManagementModulePresenter>();
-	        }
-        }
-    }
+		public IEnumerable<IManagementModulePresenter> Presenters
+		{
+			get { return container.ResolveAll<IManagementModulePresenter>(); }
+		}
+	}
 }
