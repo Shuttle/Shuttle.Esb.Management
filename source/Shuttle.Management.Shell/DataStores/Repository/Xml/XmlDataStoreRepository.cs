@@ -8,7 +8,7 @@ namespace Shuttle.Management.Shell
 {
     public class XmlDataStoreRepository : IDataStoreRepository
     {
-        private readonly IObjectSerializer serializer;
+        private readonly XmlObjectSerializer serializer;
         private readonly string dataStoreRepositoryPath;
         private readonly XmlDataStoreCollection dataStores;
 

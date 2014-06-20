@@ -123,6 +123,8 @@ namespace Shuttle.Management.Messages
 					                                         _selectedMessage.TransportMessage.MessageId,
 					                                         _selectedMessage.SourceQueueUri));
 
+							  ClearSelectedMessage();
+
 					          GetMessage();
 				          });
 		}
@@ -170,6 +172,8 @@ namespace Shuttle.Management.Messages
 
 					          _log.Information(string.Format(MessageResources.MoveAllComplete, totalMessagesMoved, sourceQueueUriValue,
 					                                         destinationQueueUriValue));
+
+							  ClearSelectedMessage();
 
 					          GetMessage();
 				          });
@@ -252,6 +256,8 @@ namespace Shuttle.Management.Messages
 						  } while (receivedMessage != null);
 
 						  _log.Information(string.Format(MessageResources.ReturnAllToSourceQueueComplete, totalMessagesReturned, sourceQueueUriValue));
+
+						  ClearSelectedMessage();
 
 						  GetMessage();
 					  });

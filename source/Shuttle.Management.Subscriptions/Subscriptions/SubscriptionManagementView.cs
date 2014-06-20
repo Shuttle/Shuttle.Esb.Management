@@ -52,7 +52,10 @@ namespace Shuttle.Management.Subscriptions
 			            	{
 								InboxWorkQueueUri.Clear();
 
-			            		uris.ForEach(uri => InboxWorkQueueUri.AddQueue(uri));
+								foreach (var uri in uris)
+								{
+									InboxWorkQueueUri.AddQueue(uri);
+								}
 			            	});
 		}
 

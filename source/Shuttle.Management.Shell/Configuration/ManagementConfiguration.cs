@@ -88,7 +88,7 @@ namespace Shuttle.Management.Shell
 			}
 			catch (Exception ex)
 			{
-				Log.Error(string.Format(ManagementResources.QueueRepositoryCreationException, QueueRepositoryType, ex.CompactMessages()));
+				Log.Error(string.Format(ManagementResources.QueueRepositoryCreationException, QueueRepositoryType, ex.AllMessages()));
 			}
 		}
 
@@ -128,7 +128,7 @@ namespace Shuttle.Management.Shell
 			}
 			catch (Exception ex)
 			{
-				Log.Error(string.Format(ManagementResources.DataStoreRepositoryCreationException, DataStoreRepositoryType, ex.CompactMessages()));
+				Log.Error(string.Format(ManagementResources.DataStoreRepositoryCreationException, DataStoreRepositoryType, ex.AllMessages()));
 			}
 		}
 	}

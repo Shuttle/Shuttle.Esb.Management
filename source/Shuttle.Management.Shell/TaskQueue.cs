@@ -5,7 +5,7 @@ using Shuttle.Core.Infrastructure;
 
 namespace Shuttle.Management.Shell
 {
-	public class TaskQueue : IDisposable, IActiveState
+	public class TaskQueue : IDisposable, IThreadState
 	{
 		private readonly object _padlock = new object();
 		private readonly Queue<QueuedTask> _tasks = new Queue<QueuedTask>();
@@ -80,7 +80,7 @@ namespace Shuttle.Management.Shell
 			}
 			catch (Exception exception)
 			{
-				_log.Error(exception.CompactMessages());
+				_log.Error(exception.AllMessages());
 			}
 		}
 

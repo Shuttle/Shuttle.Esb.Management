@@ -48,19 +48,23 @@
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.3\lib\net35-full\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Shuttle.Core.Data">
-      <HintPath>..\packages\shuttle-core-data.3.0.0.0\lib\net35-full\Shuttle.Core.Data.dll</HintPath>
+    <Reference Include="Shuttle.Core.Data, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\shuttle-core-data.3.1.0\lib\net35-full\Shuttle.Core.Data.dll</HintPath>
     </Reference>
-    <Reference Include="Shuttle.Core.Infrastructure">
-      <HintPath>..\packages\shuttle-core-infrastructure.3.0.0.0\lib\net35-full\Shuttle.Core.Infrastructure.dll</HintPath>
+    <Reference Include="Shuttle.Core.Infrastructure, Version=3.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\shuttle-core-infrastructure.3.1.1\lib\net35-full\Shuttle.Core.Infrastructure.dll</HintPath>
     </Reference>
-    <Reference Include="Shuttle.Core.Infrastructure.Log4Net">
-      <HintPath>..\packages\shuttle-core-infrastructure-log4net.3.0.0.0\lib\net35-full\Shuttle.Core.Infrastructure.Log4Net.dll</HintPath>
+    <Reference Include="Shuttle.Core.Infrastructure.Log4Net, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\shuttle-core-infrastructure-log4net.3.1.0\lib\net35-full\Shuttle.Core.Infrastructure.Log4Net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -73,6 +77,8 @@
     </Compile>
     <Compile Include="Configuration\IManagementConfiguration.cs" />
     <Compile Include="Configuration\ManagementConfiguration.cs" />
+    <Compile Include="Cryptography\CryptographyService.cs" />
+    <Compile Include="Cryptography\ICryptographyService.cs" />
     <Compile Include="DataSourceFactory.cs" />
     <Compile Include="DataStores\DataStoreDbConnectionConfigurationProvider.cs" />
     <Compile Include="DataStores\DataStorePresenter.cs" />
@@ -144,6 +150,7 @@
     <Compile Include="Queues\Repository\Xml\XmlQueueRepository.cs" />
     <Compile Include="ShellManagementModule.cs" />
     <Compile Include="TaskQueue.cs" />
+    <Compile Include="XmlObjectSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DataStores\DataStoreView.resx">

@@ -30,7 +30,7 @@ namespace Shuttle.Management
 
 		private static void ThreadException(object sender, ThreadExceptionEventArgs e)
 		{
-			Log.Error(e.Exception.CompactMessages());
+			Log.Error(e.Exception.AllMessages());
 
 			var reflection = e.Exception as ReflectionTypeLoadException;
 
@@ -38,7 +38,7 @@ namespace Shuttle.Management
 			{
 				foreach (var exception in reflection.LoaderExceptions)
 				{
-					Log.Debug(string.Format("- '{0}'.", exception.CompactMessages()));
+					Log.Debug(string.Format("- '{0}'.", exception.AllMessages()));
 				}
 			}
 		}

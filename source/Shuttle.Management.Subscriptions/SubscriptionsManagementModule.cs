@@ -41,7 +41,7 @@ namespace Shuttle.Management.Subscriptions
 					.Pick()
 					.If(type => type.Name.EndsWith("Factory"))
 					.Configure(configurer => configurer.Named(configurer.Implementation.Name.ToLower()))
-					.WithService.Select((type, basetype) => new[] {type.InterfaceMatching(RegexPatterns.EndsWith("Factory"))}));
+					.WithService.Select((type, basetype) => new[] { type.InterfaceMatching(@".*Factory\Z") }));
 
 			container.Register(
 				Classes

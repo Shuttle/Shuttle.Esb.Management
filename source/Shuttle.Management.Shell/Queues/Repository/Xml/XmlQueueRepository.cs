@@ -8,7 +8,7 @@ namespace Shuttle.Management.Shell
 {
     public class XmlQueueRepository : IQueueRepository
     {
-    	private readonly IObjectSerializer serializer;
+    	private readonly XmlObjectSerializer serializer;
     	private readonly string queueRepositoryPath;
     	private readonly XmlQueueCollection queues;
 

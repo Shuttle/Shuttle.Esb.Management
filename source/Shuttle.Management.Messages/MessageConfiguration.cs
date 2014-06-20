@@ -35,7 +35,7 @@ namespace Shuttle.Management.Messages
 			}
 			catch (Exception ex)
 			{
-				Log.Error(string.Format(MessageResources.SerializerTypeExceptionDefaultSerializer, SerializerType, ex.CompactMessages()));
+				Log.Error(string.Format(MessageResources.SerializerTypeExceptionDefaultSerializer, SerializerType, ex.AllMessages()));
 
 				serializer = new DefaultSerializer();
 			}
