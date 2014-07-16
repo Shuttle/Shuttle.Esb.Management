@@ -1,0 +1,31 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="PerformRelease" ToolsVersion="4.0">
+	<UsingTask AssemblyFile="MSBuildCommunityTasks\MSBuild.Community.Tasks.dll" TaskName="MSBuild.Community.Tasks.FileUpdate" />
+	<PropertyGroup>
+		<Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
+		<DeploymentFolder>..\deployment\shuttle-management-$(Framework)\</DeploymentFolder>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Framework Include="net35-full;net40-full;net45-full" />
+	</ItemGroup>
+
+	<Target Name="PerformRelease">
+		<MSBuild Projects="$(MSBuildProjectFile)" Targets="DeployBinaries" Properties="Framework=%(Framework.Identity)"/>
+	</Target>
+
+	<Target Name="DeployBinaries">
+		<MSBuild Projects="$(Configuration).msbuild" Properties="Framework=%(Framework.Identity)"/>
+
+		<RemoveDir Directories="$(DeploymentFolder)"/>
+		<MakeDir Directories="$(DeploymentFolder)"/>
+
+		<ItemGroup>
+			<BinaryFiles Include="..\..\source\Shuttle.Management\bin\$(Configuration)\*.*" />
+		</ItemGroup>
+
+		<Copy SourceFiles="%(BinaryFiles.FullPath)" DestinationFolder="$(DeploymentFolder)" SkipUnchangedFiles="false" />
+		<Copy SourceFiles="..\configuration\release.config" DestinationFiles="$(DeploymentFolder)\Shuttle.Management.exe.config" SkipUnchangedFiles="false" />
+		<Delete Files="$(DeploymentFolder)\release.config" />
+	</Target>
+
+</Project>
