@@ -3,9 +3,11 @@
     public interface IMessageManagementPresenter
     {
 	    void Acknowledge();
-        void Move();
         void ReturnToSourceQueue();
-	    void MoveAll();
+		void Move();
+		void MoveAll();
+		void Copy();
+		void CopyAll();
 	    void ReturnAllToSourceQueue();
 	    void GetMessage();
     }

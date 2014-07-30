@@ -24,11 +24,17 @@ namespace Shuttle.Management.Messages
 									 MessageResources.ImageStopIgnoring,
 									 delegate { presenter.StopIgnoring(); });
 			MessageToolStrip.AddItem(MessageResources.TextMove,
-									 MessageResources.ImageArrowDown,
+									 MessageResources.ImageMessageMove,
 			                         delegate { presenter.Move(); });
 			MessageToolStrip.AddItem(MessageResources.TextMoveAll,
-									 MessageResources.ImageArrowDown,
+									 MessageResources.ImageMessageMove,
 			                         delegate { presenter.MoveAll(); });
+			MessageToolStrip.AddItem(MessageResources.TextCopy,
+									 MessageResources.ImageMessageCopy,
+			                         delegate { presenter.Copy(); });
+			MessageToolStrip.AddItem(MessageResources.TextCopyAll,
+									 MessageResources.ImageMessageCopy,
+			                         delegate { presenter.CopyAll(); });
 			MessageToolStrip.AddItem(MessageResources.TextReturnToSourceQueue,
 			                         MessageResources.ImageArrowBack,
 			                         delegate { presenter.ReturnToSourceQueue(); });

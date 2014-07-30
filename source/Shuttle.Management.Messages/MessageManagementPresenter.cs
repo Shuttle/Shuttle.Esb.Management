@@ -64,7 +64,7 @@ namespace Shuttle.Management.Messages
 		{
 			if (!HasSelectedMessage)
 			{
-				_log.Error(MessageResources.NoMessageSelected);
+				_log.Information(MessageResources.NoMessageSelected);
 
 				return;
 			}
@@ -76,6 +76,8 @@ namespace Shuttle.Management.Messages
 			{
 				return;
 			}
+
+			ClearMessageView();
 
 			QueueTask("AcknowledgeMessage",
 			          () =>
@@ -91,9 +93,7 @@ namespace Shuttle.Management.Messages
 
 					          queue.Acknowledge(_selectedMessage.ReceivedMessage.AcknowledgementToken);
 
-					          ClearSelectedMessage();
-
-					          GetMessage();
+							  GetMessage();
 				          });
 		}
 
@@ -101,10 +101,12 @@ namespace Shuttle.Management.Messages
 		{
 			if (!HasSelectedMessage)
 			{
-				_log.Error(MessageResources.NoMessageSelected);
+				_log.Information(MessageResources.NoMessageSelected);
 
 				return;
 			}
+
+			ClearMessageView();
 
 			var destinationQueueUriValue = _view.DestinationQueueUriValue;
 
@@ -123,8 +125,6 @@ namespace Shuttle.Management.Messages
 					                                         _selectedMessage.TransportMessage.MessageId,
 					                                         _selectedMessage.SourceQueueUri));
 
-							  ClearSelectedMessage();
-
 					          GetMessage();
 				          });
 		}
@@ -141,6 +141,8 @@ namespace Shuttle.Management.Messages
 			{
 				return;
 			}
+
+			ClearMessageView();
 
 			ReleaseMessage();
 
@@ -173,20 +175,100 @@ namespace Shuttle.Management.Messages
 					          _log.Information(string.Format(MessageResources.MoveAllComplete, totalMessagesMoved, sourceQueueUriValue,
 					                                         destinationQueueUriValue));
 
-							  ClearSelectedMessage();
-
 					          GetMessage();
 				          });
+		}
+
+		public void Copy()
+		{
+			if (!HasSelectedMessage)
+			{
+				_log.Information(MessageResources.NoMessageSelected);
+
+				return;
+			}
+
+			var destinationQueueUriValue = _view.DestinationQueueUriValue;
+
+			QueueTask("Copy",
+					  () =>
+					  {
+						  _queueManager.GetQueue(destinationQueueUriValue).Enqueue(_selectedMessage.TransportMessage.MessageId, _selectedMessage.ReceivedMessage.Stream);
+
+						  _log.Information(string.Format(MessageResources.EnqueuedMessage,
+														 _selectedMessage.TransportMessage.MessageId, destinationQueueUriValue));
+					  });
+		}
+
+		public void CopyAll()
+		{
+			var sourceQueueUriValue = _view.SourceQueueUriValue;
+			var destinationQueueUriValue = _view.DestinationQueueUriValue;
+
+			if (!HasSelectedMessage)
+			{
+				_log.Information(MessageResources.NoMessageSelected);
+
+				return;
+			}
+
+			if (MessageBox.Show(string.Format(MessageResources.ConfirmCopyAll, sourceQueueUriValue, destinationQueueUriValue),
+								MessageResources.Confirmation,
+								MessageBoxButtons.YesNo,
+								MessageBoxIcon.Question) != DialogResult.Yes)
+			{
+				return;
+			}
+
+			ClearMessageView();
+
+			QueueTask("CopyAll",
+					  () =>
+					  {
+						  var destination = _queueManager.GetQueue(destinationQueueUriValue);
+						  var source = _queueManager.GetQueue(sourceQueueUriValue);
+						  var totalMessagesCopied = 0;
+						  var startMessageId = _selectedMessage.TransportMessage.MessageId;
+
+						  source.Release(_selectedMessage.ReceivedMessage.AcknowledgementToken);
+
+						  ReceivedMessage receivedMessage;
+						  TransportMessage transportMessage = null;
+
+						  do
+						  {
+							  receivedMessage = source.GetMessage();
+
+							  if (receivedMessage == null)
+							  {
+								  continue;
+							  }
+
+							  transportMessage = (TransportMessage)_serializer.Deserialize(typeof(TransportMessage), receivedMessage.Stream);
+
+							  destination.Enqueue(transportMessage.MessageId, receivedMessage.Stream);
+							  source.Release(receivedMessage.AcknowledgementToken);
+
+							  totalMessagesCopied++;
+						  } while (receivedMessage != null && !startMessageId.Equals(transportMessage.MessageId));
+
+						  _log.Information(string.Format(MessageResources.CopyAllComplete, totalMessagesCopied, sourceQueueUriValue,
+														 destinationQueueUriValue));
+
+						  GetMessage();
+					  });
 		}
 
 		public void ReturnToSourceQueue()
 		{
 			if (!HasSelectedMessage)
 			{
-				_log.Error(MessageResources.NoMessageSelected);
+				_log.Information(MessageResources.NoMessageSelected);
 
 				return;
 			}
+
+			ClearMessageView();
 
 			QueueTask("ReturnToSourceQueue",
 			          () =>
@@ -208,8 +290,6 @@ namespace Shuttle.Management.Messages
 					                                         _selectedMessage.TransportMessage.MessageId,
 					                                         _selectedMessage.TransportMessage.RecipientInboxWorkQueueUri));
 
-							  ClearSelectedMessage();
-
 							  GetMessage();
 						  });
 		}
@@ -227,6 +307,8 @@ namespace Shuttle.Management.Messages
 			}
 
 			ReleaseMessage();
+
+			ClearMessageView();
 
 			QueueTask("MoveAll",
 					  () =>
@@ -257,8 +339,6 @@ namespace Shuttle.Management.Messages
 
 						  _log.Information(string.Format(MessageResources.ReturnAllToSourceQueueComplete, totalMessagesReturned, sourceQueueUriValue));
 
-						  ClearSelectedMessage();
-
 						  GetMessage();
 					  });
 		}
@@ -277,8 +357,12 @@ namespace Shuttle.Management.Messages
 		{
 			if (!HasSelectedMessage)
 			{
+				_log.Information(MessageResources.NoMessageSelected);
+
 				return;
 			}
+
+			ClearMessageView();
 
 			QueueTask("StopIgnoring",
 			          () =>
@@ -291,15 +375,13 @@ namespace Shuttle.Management.Messages
 					                         _serializer.Serialize(_selectedMessage.TransportMessage));
 					          source.Acknowledge(_selectedMessage.ReceivedMessage.AcknowledgementToken);
 
-					          ClearSelectedMessage();
-
 					          GetMessage();
 				          });
 		}
 
-		private void ClearSelectedMessage()
+		private void ClearMessageView()
 		{
-			_selectedMessage = null;
+			_view.ClearMessageView();
 		}
 
 		public void GetMessage()
@@ -308,10 +390,14 @@ namespace Shuttle.Management.Messages
 
 			var sourceQueueUri = _view.SourceQueueUriValue;
 
+			ClearMessageView();
+
 			QueueTask("GetMessage",
 			          () =>
 				          {
-					          var queue = _queueManager.GetQueue(sourceQueueUri);
+							  _selectedMessage = null;
+							  
+							  var queue = _queueManager.GetQueue(sourceQueueUri);
 
 					          if (queue == null)
 					          {
@@ -325,9 +411,7 @@ namespace Shuttle.Management.Messages
 
 					          if (receivedMessage == null)
 					          {
-						          _view.ClearMessageView();
-
-						          return;
+								  return;
 					          }
 
 					          var transportMessage =
@@ -384,8 +468,12 @@ namespace Shuttle.Management.Messages
 		{
 			if (!HasSelectedMessage)
 			{
+				_log.Information(MessageResources.NoMessageSelected);
+
 				return;
 			}
+
+			ClearMessageView();
 
 			QueueTask("ReleaseMessage",
 			          () =>
@@ -400,8 +488,6 @@ namespace Shuttle.Management.Messages
 					          }
 
 					          queue.Release(_selectedMessage.ReceivedMessage.AcknowledgementToken);
-
-					          ClearSelectedMessage();
 				          });
 		}
 
@@ -417,5 +503,6 @@ namespace Shuttle.Management.Messages
 				_queueManager.AttemptDispose();
 			}
 		}
+
 	}
 }
