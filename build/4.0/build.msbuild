@@ -1,5 +1,6 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build" ToolsVersion="4.0">
-	<Import Project="MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets" />
+	<UsingTask AssemblyFile="MSBuildCommunityTasks\MSBuild.Community.Tasks.dll" TaskName="MSBuild.Community.Tasks.Prompt" />
+	<UsingTask AssemblyFile="MSBuildCommunityTasks\MSBuild.Community.Tasks.dll" TaskName="MSBuild.Community.Tasks.FileUpdate" />
 
 	<PropertyGroup>
 		<DeploymentFolder>..\deployment\shuttle-management-$(Framework)\</DeploymentFolder>
@@ -10,7 +11,28 @@
 	</ItemGroup>
 
 	<Target Name="Build">
-		<MSBuild Projects="shared.msbuild" Properties="Configuration=Debug;Framework=%(Framework.Identity);OutputPath=$(MSBuildProjectDirectory)\..\debug\shuttle-management-%(Framework.Identity)"/>
-		<MSBuild Projects="shared.msbuild" Properties="Configuration=Release;Framework=%(Framework.Identity);OutputPath=$(MSBuildProjectDirectory)\..\release\shuttle-management-%(Framework.Identity)"/>
+		<Prompt Text="Enter semantic version:" Condition="$(SemanticVersion) == ''">
+			<Output TaskParameter="UserInput" PropertyName="SemanticVersion" />
+		</Prompt>
+
+		<MSBuild
+            Projects="$(MSBuildProjectFile)"
+            Targets="ApplyDeploymentVersionNumber"
+            Properties="SemanticVersion=$(SemanticVersion)"
+        />
+
+		<MSBuild Projects="shared.msbuild" Properties="Configuration=Debug;Framework=%(Framework.Identity);OutputPath=$(MSBuildProjectDirectory)\..\Debug\shuttle-management-%(Framework.Identity)"/>
+		<MSBuild Projects="shared.msbuild" Properties="Configuration=Release;Framework=%(Framework.Identity);OutputPath=$(MSBuildProjectDirectory)\..\Release\shuttle-management-%(Framework.Identity)"/>
+	</Target>
+
+	<Target Name="ApplyDeploymentVersionNumber">
+		<Error Text="Please enter a semantic version number." Condition="$(SemanticVersion) == ''" />
+
+		<ItemGroup>
+			<AssemblyInfoFiles Include="..\..\**\*AssemblyInfo.cs"/>
+		</ItemGroup>
+
+		<FileUpdate Files="@(AssemblyInfoFiles)" Regex="AssemblyInformationalVersion\s*\(\s*&quot;.*&quot;\s*\)" ReplacementText="AssemblyInformationalVersion(&quot;$(SemanticVersion)&quot;)" />
+		<FileUpdate Files="@(AssemblyInfoFiles)" Regex="AssemblyVersion\s*\(\s*&quot;.*&quot;\s*\)" ReplacementText="AssemblyVersion(&quot;$(SemanticVersion).0&quot;)" />
 	</Target>
 </Project>
