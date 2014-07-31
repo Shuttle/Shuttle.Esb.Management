@@ -1,12 +1,16 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build" ToolsVersion="4.0">
 	<UsingTask AssemblyFile="MSBuildCommunityTasks\MSBuild.Community.Tasks.dll" TaskName="MSBuild.Community.Tasks.Prompt" />
 	<UsingTask AssemblyFile="MSBuildCommunityTasks\MSBuild.Community.Tasks.dll" TaskName="MSBuild.Community.Tasks.FileUpdate" />
-
-	<PropertyGroup>
-		<DeploymentFolder>..\deployment\shuttle-management-$(Framework)\</DeploymentFolder>
-	</PropertyGroup>
+	<UsingTask AssemblyFile="MSBuildCommunityTasks\MSBuild.Community.Tasks.dll" TaskName="MSBuild.Community.Tasks.Zip" />
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\source\Shuttle.Management\Shuttle.Management.csproj" />
+		<ProjectReference Include="..\..\source\Shuttle.Management.Shell\Shuttle.Management.Shell.csproj" />
+		<ProjectReference Include="..\..\source\Shuttle.Management.Messages\Shuttle.Management.Messages.csproj" />
+		<ProjectReference Include="..\..\source\Shuttle.Management.Subscriptions\Shuttle.Management.Subscriptions.csproj" />
+		
+		<DatabaseScript Include="database\**\*.sql" />
+
 		<Framework Include="net35-full;net40-full;net45-full" />
 	</ItemGroup>
 
@@ -21,8 +25,28 @@
             Properties="SemanticVersion=$(SemanticVersion)"
         />
 
-		<MSBuild Projects="shared.msbuild" Properties="Configuration=Debug;Framework=%(Framework.Identity);OutputPath=$(MSBuildProjectDirectory)\..\Debug\shuttle-management-%(Framework.Identity)"/>
-		<MSBuild Projects="shared.msbuild" Properties="Configuration=Release;Framework=%(Framework.Identity);OutputPath=$(MSBuildProjectDirectory)\..\Release\shuttle-management-%(Framework.Identity)"/>
+		<MSBuild
+            Projects="$(MSBuildProjectFile)"
+            Targets="Deploy"
+            Properties="OutputPath=$(MSBuildProjectDirectory)\..\Release\shuttle-management-%(Framework.Identity)"
+        />
+	</Target>
+	
+	<Target Name="Deploy">
+		<MSBuild Projects="@(ProjectReference)" Targets="Rebuild" Properties="Framework=%(Framework.Identity);Configuration=Release;OutputPath=$(OutputPath)"/>
+		<Copy SourceFiles="@(DatabaseScript)" DestinationFolder="$(OutputPath)\database\%(RecursiveDir)" SkipUnchangedFiles="false" />
+		<Copy SourceFiles="configuration\release.config" DestinationFiles="$(OutputPath)\Shuttle.Management.exe.config" SkipUnchangedFiles="false" />
+
+		<ItemGroup>
+			<ZipFiles Include="$(OutputPath)\**\*.*" />
+		</ItemGroup>
+		
+		<Message Text="$(OutputPath)"/>
+
+		<Zip Files="@(ZipFiles)"
+			WorkingDirectory="$(MSBuildProjectDirectory)\..\Release\"
+			ZipFileName="$(OutputPath).zip"
+			ZipLevel="9" />		
 	</Target>
 
 	<Target Name="ApplyDeploymentVersionNumber">
