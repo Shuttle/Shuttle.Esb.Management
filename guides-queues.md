@@ -35,7 +35,7 @@ The full application configuration file would be the following:
 
 ### XmlQueueRepository
 
-The `XmlQueueRepository` persists the queue uris to an xml file called *queue.store*.
+The `XmlQueueRepository` persists the queue uris to an xml file specified in the application configuration file.
 
 The full application configuration file would be the following:
 
