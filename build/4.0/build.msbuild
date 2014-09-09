@@ -9,7 +9,7 @@
 		<ProjectReference Include="..\..\source\Shuttle.Management.Messages\Shuttle.Management.Messages.csproj" />
 		<ProjectReference Include="..\..\source\Shuttle.Management.Subscriptions\Shuttle.Management.Subscriptions.csproj" />
 		
-		<DatabaseScript Include="database\**\*.sql" />
+		<DatabaseScript Include="..\..\source\Shuttle.Management.Shell\**\*.sql" />
 
 		<Framework Include="net35-full;net40-full;net45-full" />
 	</ItemGroup>
@@ -34,7 +34,7 @@
 	
 	<Target Name="Deploy">
 		<MSBuild Projects="@(ProjectReference)" Targets="Rebuild" Properties="Framework=%(Framework.Identity);Configuration=Release;OutputPath=$(OutputPath)"/>
-		<Copy SourceFiles="@(DatabaseScript)" DestinationFolder="$(OutputPath)\database\%(RecursiveDir)" SkipUnchangedFiles="false" />
+		<Copy SourceFiles="@(DatabaseScript)" DestinationFolder="$(OutputPath)\database\" SkipUnchangedFiles="false" />
 		<Copy SourceFiles="configuration\release.config" DestinationFiles="$(OutputPath)\Shuttle.Management.exe.config" SkipUnchangedFiles="false" />
 
 		<ItemGroup>
