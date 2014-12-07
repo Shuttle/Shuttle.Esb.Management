@@ -19,9 +19,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{89066D
 	ProjectSection(SolutionItems) = preProject
 		.build\app.config = .build\app.config
 		.build\package.msbuild = .build\package.msbuild
-		.build\package.nuspec = .build\package.nuspec
 		.build\Shuttle.Core.MSBuild.dll = .build\Shuttle.Core.MSBuild.dll
 		.build\Shuttle.Core.MSBuild.targets = .build\Shuttle.Core.MSBuild.targets
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3F5752A3-D071-4763-9512-C81CA0685C2D}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		README.md = README.md
 	EndProjectSection
 EndProject
 Global
