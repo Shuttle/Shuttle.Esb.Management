@@ -3,7 +3,7 @@ shuttle-management
 
 This project provides a Windows management shell.
 
-Download the latest release source code and then build:
+Download the latest release source code and then build from the command prompt:
 
 > .\shuttle-management\.build\msbuild package.msbuild
 
