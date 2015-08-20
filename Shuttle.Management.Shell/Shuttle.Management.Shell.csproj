@@ -54,8 +54,9 @@
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.3\lib\net35-full\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Shuttle.Core.Data">
-      <HintPath>..\packages\shuttle-core-data.3.1.5\lib\net35-full\Shuttle.Core.Data.dll</HintPath>
+    <Reference Include="Shuttle.Core.Data, Version=3.1.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\shuttle-core-data.3.1.6\lib\net35-full\Shuttle.Core.Data.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Shuttle.Core.Infrastructure">
       <HintPath>..\packages\shuttle-core-infrastructure.3.1.5\lib\net35-full\Shuttle.Core.Infrastructure.dll</HintPath>
