@@ -18,39 +18,39 @@ namespace Shuttle.Management.Subscriptions
 			_queryFactory = queryFactory;
 		}
 
-		public DataTable All(DataSource source)
+		public DataTable All()
 		{
-			return _databaseGateway.GetDataTableFor(source, _queryFactory.All());
+			return _databaseGateway.GetDataTableFor(_queryFactory.All());
 		}
 
-		public DataTable AllUris(DataSource source)
+		public DataTable AllUris()
 		{
-			return _databaseGateway.GetDataTableFor(source, _queryFactory.AllInboxWorkQueueUris());
+			return _databaseGateway.GetDataTableFor(_queryFactory.AllInboxWorkQueueUris());
 		}
 
-		public DataTable MessageTypes(DataSource source, string inboxWorkQueueUri)
+		public DataTable MessageTypes(string inboxWorkQueueUri)
 		{
-			return _databaseGateway.GetDataTableFor(source, _queryFactory.MessageTypes(inboxWorkQueueUri));
+			return _databaseGateway.GetDataTableFor(_queryFactory.MessageTypes(inboxWorkQueueUri));
 		}
 
-		public bool HasSubscriptionStructures(DataSource source)
+		public bool HasSubscriptionStructures()
 		{
-			return _databaseGateway.GetScalarUsing<int>(source, _queryFactory.HasSubscriptionStructures()) == 1;
+			return _databaseGateway.GetScalarUsing<int>(_queryFactory.HasSubscriptionStructures()) == 1;
 		}
 
-		public void Remove(DataSource source, string inboxWorkQueueUri, string messageType)
+		public void Remove(string inboxWorkQueueUri, string messageType)
 		{
-			_databaseGateway.ExecuteUsing(source, _queryFactory.Remove(inboxWorkQueueUri, messageType));
+			_databaseGateway.ExecuteUsing(_queryFactory.Remove(inboxWorkQueueUri, messageType));
 		}
 
-		public bool Contains(DataSource source, string inboxWorkQueueUri, string messageType)
+		public bool Contains(string inboxWorkQueueUri, string messageType)
 		{
-			return _databaseGateway.GetScalarUsing<int>(source, _queryFactory.Contains(inboxWorkQueueUri, messageType)) == 1;
+			return _databaseGateway.GetScalarUsing<int>(_queryFactory.Contains(inboxWorkQueueUri, messageType)) == 1;
 		}
 
-		public void Add(DataSource source, string inboxWorkQueueUri, string messageType)
+		public void Add(string inboxWorkQueueUri, string messageType)
 		{
-			_databaseGateway.ExecuteUsing(source, _queryFactory.Add(inboxWorkQueueUri, messageType));
+			_databaseGateway.ExecuteUsing(_queryFactory.Add(inboxWorkQueueUri, messageType));
 		}
 	}
 }

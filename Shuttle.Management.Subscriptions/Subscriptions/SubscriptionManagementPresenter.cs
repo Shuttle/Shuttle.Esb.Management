@@ -11,43 +11,43 @@ namespace Shuttle.Management.Subscriptions
 {
 	public class SubscriptionManagementPresenter : ManagementModulePresenter, ISubscriptionManagementPresenter
 	{
-		private readonly IDatabaseGateway databaseGateway;
-		private readonly IDatabaseConnectionFactory databaseConnectionFactory;
-		private readonly ISubscriptionQuery subscriptionQuery;
-		private readonly IReflectionService reflectionService;
+		private readonly IDatabaseContextFactory _databaseContextFactory;
+		private readonly IDatabaseGateway _databaseGateway;
+		private readonly IReflectionService _reflectionService;
 
-		private readonly ISubscriptionManagementView view;
+		private readonly ISubscriptionManagementView _subscriptionManagementView;
+		private readonly ISubscriptionQuery _subscriptionQuery;
 
 		public SubscriptionManagementPresenter(IDatabaseGateway databaseGateway,
-		                                       IDatabaseConnectionFactory databaseConnectionFactory,
-		                                       ISubscriptionQuery subscriptionQuery, IReflectionService reflectionService)
+			IDatabaseContextFactory databaseContextFactory,
+			ISubscriptionQuery subscriptionQuery, IReflectionService reflectionService)
 		{
-			view = new SubscriptionManagementView(this);
+			_subscriptionManagementView = new SubscriptionManagementView(this);
 
 			Guard.AgainstNull(databaseGateway, "databaseGateway");
-			Guard.AgainstNull(databaseConnectionFactory, "databaseConnectionFactory");
+			Guard.AgainstNull(databaseContextFactory, "databaseContextFactory");
 			Guard.AgainstNull(subscriptionQuery, "subscriptionQuery");
 			Guard.AgainstNull(reflectionService, "reflectionService");
 
-			this.databaseGateway = databaseGateway;
-			this.databaseConnectionFactory = databaseConnectionFactory;
-			this.subscriptionQuery = subscriptionQuery;
-			this.reflectionService = reflectionService;
+			_databaseGateway = databaseGateway;
+			_databaseContextFactory = databaseContextFactory;
+			_subscriptionQuery = subscriptionQuery;
+			_reflectionService = reflectionService;
 		}
 
 		public void CheckAllSubscriptions()
 		{
-			view.CheckAllSubscriptions();
+			_subscriptionManagementView.CheckAllSubscriptions();
 		}
 
 		public void InvertSubscriptionChecks()
 		{
-			view.InvertSubscriptionChecks();
+			_subscriptionManagementView.InvertSubscriptionChecks();
 		}
 
 		public void RefreshSubscriptions()
 		{
-			var dataStoreName = view.DataStoreValue;
+			var dataStoreName = _subscriptionManagementView.DataStoreValue;
 
 			if (string.IsNullOrEmpty(dataStoreName))
 			{
@@ -56,7 +56,7 @@ namespace Shuttle.Management.Subscriptions
 				return;
 			}
 
-			var inboxWorkQueueUriValue = view.InboxWorkQueueUriValue;
+			var inboxWorkQueueUriValue = _subscriptionManagementView.InboxWorkQueueUriValue;
 
 			if (string.IsNullOrEmpty(inboxWorkQueueUriValue))
 			{
@@ -66,19 +66,17 @@ namespace Shuttle.Management.Subscriptions
 			}
 
 			QueueTask("RefreshSubscriptions",
-			          () =>
-				          {
-					          view.ClearSubscriptions();
+				() =>
+				{
+					_subscriptionManagementView.ClearSubscriptions();
 
-					          var dataSource = DataSourceFactory.Create(dataStoreName);
-
-					          using (databaseConnectionFactory.Create(dataSource))
-						          foreach (DataRow row in
-							          subscriptionQuery.MessageTypes(dataSource, inboxWorkQueueUriValue).Rows)
-						          {
-							          view.AddSubscription(SubscriptionColumns.MessageType.MapFrom(row));
-						          }
-				          });
+					using (_databaseContextFactory.Create(dataStoreName))
+						foreach (DataRow row in
+							_subscriptionQuery.MessageTypes(inboxWorkQueueUriValue).Rows)
+						{
+							_subscriptionManagementView.AddSubscription(SubscriptionColumns.MessageType.MapFrom(row));
+						}
+				});
 		}
 
 		public override void OnViewReady()
@@ -91,12 +89,13 @@ namespace Shuttle.Management.Subscriptions
 
 		public void RefreshDataStores()
 		{
-			QueueTask("RefreshDataStores", () => view.PopulateDataStores(ManagementConfiguration.DataStoreRepository().All()));
+			QueueTask("RefreshDataStores",
+				() => _subscriptionManagementView.PopulateDataStores(ManagementConfiguration.DataStoreRepository().All()));
 		}
 
 		public void AddSubscriptions()
 		{
-			var dataStoreName = view.DataStoreValue;
+			var dataStoreName = _subscriptionManagementView.DataStoreValue;
 
 			if (string.IsNullOrEmpty(dataStoreName))
 			{
@@ -105,7 +104,7 @@ namespace Shuttle.Management.Subscriptions
 				return;
 			}
 
-			var inboxWorkQueueUri = view.InboxWorkQueueUriValue;
+			var inboxWorkQueueUri = _subscriptionManagementView.InboxWorkQueueUriValue;
 
 			if (string.IsNullOrEmpty(inboxWorkQueueUri))
 			{
@@ -115,85 +114,81 @@ namespace Shuttle.Management.Subscriptions
 			}
 
 			QueueTask("AddSubscriptions",
-			          () =>
-				          {
-					          var source = DataSourceFactory.Create(dataStoreName);
+				() =>
+				{
+					using (_databaseContextFactory.Create(dataStoreName))
+					{
+						foreach (var messageType in _subscriptionManagementView.SelectedMessageTypes)
+						{
+							if (_subscriptionQuery.Contains(inboxWorkQueueUri, messageType))
+							{
+								continue;
+							}
 
-					          using (databaseConnectionFactory.Create(source))
-					          {
-						          foreach (var messageType in view.SelectedMessageTypes)
-						          {
-							          if (subscriptionQuery.Contains(source, inboxWorkQueueUri, messageType))
-							          {
-								          continue;
-							          }
-
-							          subscriptionQuery.Add(source, inboxWorkQueueUri, messageType);
-						          }
-					          }
-				          });
+							_subscriptionQuery.Add(inboxWorkQueueUri, messageType);
+						}
+					}
+				});
 
 			RefreshSubscriptions();
 		}
 
 		public void CheckAllEventMessageTypes()
 		{
-			view.CheckAllEventMessageTypes();
+			_subscriptionManagementView.CheckAllEventMessageTypes();
 		}
 
 		public void InvertEventMessageTypeChecks()
 		{
-			view.InvertEventMessageTypeChecks();
+			_subscriptionManagementView.InvertEventMessageTypeChecks();
 		}
 
 		public void GetAssemblyEventMessageTypes()
 		{
-			view.GetAssemblyFileName();
+			_subscriptionManagementView.GetAssemblyFileName();
 		}
 
 		public void ShowAssemblyTypes(string fileName)
 		{
 			QueueTask("ShowAssemblyTypes",
-			          () =>
-			          view.PopulateEventTypes(
-				          reflectionService.GetTypes(reflectionService.GetAssembly(fileName))));
+				() =>
+					_subscriptionManagementView.PopulateEventTypes(
+						_reflectionService.GetTypes(_reflectionService.GetAssembly(fileName))));
 		}
 
 		public void RefreshSubscribers()
 		{
-			var dataStoreName = view.DataStoreValue;
+			var dataStoreName = _subscriptionManagementView.DataStoreValue;
 
 			QueueTask("RefreshSubscribers",
-			          () =>
-				          {
-					          var uris = new List<string>();
+				() =>
+				{
+					var uris = new List<string>();
 
-					          if (!string.IsNullOrEmpty(dataStoreName))
-					          {
-						          var dataSource = DataSourceFactory.Create(dataStoreName);
+					if (!string.IsNullOrEmpty(dataStoreName))
+					{
+						using (_databaseContextFactory.Create(dataStoreName))
+						{
+							uris.AddRange(from DataRow row in _subscriptionQuery.AllUris().Rows
+								select SubscriptionColumns.InboxWorkQueueUri.MapFrom(row));
+						}
+					}
 
-						          using (databaseConnectionFactory.Create(dataSource))
-						          {
-							          uris.AddRange(from DataRow row in subscriptionQuery.AllUris(dataSource).Rows
-							                        select SubscriptionColumns.InboxWorkQueueUri.MapFrom(row));
-						          }
-					          }
+					uris.AddRange(from Queue queue in ManagementConfiguration.QueueRepository().All()
+						where !uris.Contains(queue.Uri)
+						select queue.Uri);
 
-					          uris.AddRange(from Queue queue in ManagementConfiguration.QueueRepository().All()
-					                        where !uris.Contains(queue.Uri)
-					                        select queue.Uri);
+					uris.Sort();
 
-					          uris.Sort();
-
-					          view.PopulateSubscriberUris(uris);
-				          });
+					_subscriptionManagementView.PopulateSubscriberUris(uris);
+				});
 
 			RefreshSubscriptions();
 		}
 
 		public void RemoveSubscriptions()
 		{
-			var dataStoreName = view.DataStoreValue;
+			var dataStoreName = _subscriptionManagementView.DataStoreValue;
 
 			if (string.IsNullOrEmpty(dataStoreName))
 			{
@@ -202,7 +197,7 @@ namespace Shuttle.Management.Subscriptions
 				return;
 			}
 
-			var inboxWorkQueueUri = view.InboxWorkQueueUriValue;
+			var inboxWorkQueueUri = _subscriptionManagementView.InboxWorkQueueUriValue;
 
 			if (string.IsNullOrEmpty(inboxWorkQueueUri))
 			{
@@ -213,25 +208,23 @@ namespace Shuttle.Management.Subscriptions
 
 			if (
 				MessageBox.Show(string.Format(ManagementResources.ConfirmRemoval, SubscriptionResources.TextSubscriptions),
-				                ManagementResources.Confirmation, MessageBoxButtons.YesNo, MessageBoxIcon.Question) !=
+					ManagementResources.Confirmation, MessageBoxButtons.YesNo, MessageBoxIcon.Question) !=
 				DialogResult.Yes)
 			{
 				return;
 			}
 
 			QueueTask("RemoveSubscriptions",
-			          () =>
-				          {
-					          var source = DataSourceFactory.Create(dataStoreName);
-
-					          using (databaseConnectionFactory.Create(source))
-					          {
-						          foreach (var messageType in view.SelectedSubscriptions)
-						          {
-							          subscriptionQuery.Remove(source, inboxWorkQueueUri, messageType);
-						          }
-					          }
-				          }
+				() =>
+				{
+					using (_databaseContextFactory.Create(dataStoreName))
+					{
+						foreach (var messageType in _subscriptionManagementView.SelectedSubscriptions)
+						{
+							_subscriptionQuery.Remove(inboxWorkQueueUri, messageType);
+						}
+					}
+				}
 				);
 
 			RefreshSubscriptions();
@@ -239,16 +232,14 @@ namespace Shuttle.Management.Subscriptions
 
 		public void DataStoreChanged()
 		{
-			var dataSource = DataSourceFactory.Create(view.DataStoreValue);
-
-			using (databaseConnectionFactory.Create(dataSource))
+			using (_databaseContextFactory.Create(_subscriptionManagementView.DataStoreValue))
 			{
-				if (!subscriptionQuery.HasSubscriptionStructures(dataSource))
+				if (!_subscriptionQuery.HasSubscriptionStructures())
 				{
 					Log.Error(
 						string.Format(
 							"Data store '{0}' does not contain the required structures for subscription handling.  Please execute the relevant creation script against the data store.",
-							view.DataStoreValue));
+							_subscriptionManagementView.DataStoreValue));
 				}
 			}
 
@@ -269,7 +260,7 @@ namespace Shuttle.Management.Subscriptions
 		{
 			get
 			{
-				var control = (UserControl) view;
+				var control = (UserControl) _subscriptionManagementView;
 
 				control.Enabled = ManagementConfiguration.HasDataStoreRepository;
 

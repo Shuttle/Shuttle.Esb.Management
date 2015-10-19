@@ -1,16 +1,15 @@
 using System.Data;
-using Shuttle.Core.Data;
 
 namespace Shuttle.Management.Subscriptions
 {
-    public interface ISubscriptionQuery
-    {
-        DataTable All(DataSource source);
-		DataTable AllUris(DataSource source);
-		DataTable MessageTypes(DataSource source, string inboxWorkQueueUri);
-		bool HasSubscriptionStructures(DataSource source);
-	    void Remove(DataSource source, string inboxWorkQueueUri, string messageType);
-	    bool Contains(DataSource source, string inboxWorkQueueUri, string messageType);
-	    void Add(DataSource source, string inboxWorkQueueUri, string messageType);
-    }
+	public interface ISubscriptionQuery
+	{
+		DataTable All();
+		DataTable AllUris();
+		DataTable MessageTypes(string inboxWorkQueueUri);
+		bool HasSubscriptionStructures();
+		void Remove(string inboxWorkQueueUri, string messageType);
+		bool Contains(string inboxWorkQueueUri, string messageType);
+		void Add(string inboxWorkQueueUri, string messageType);
+	}
 }

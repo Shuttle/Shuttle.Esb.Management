@@ -16,23 +16,17 @@ namespace Shuttle.Management.Subscriptions
 			if (!managementConfiguration.HasDataStoreRepository)
 			{
 				Log.Warning(string.Format(ManagementResources.DataStoreRepositoryRequired,
-				                          "Shuttle.Management.Subscriptions"));
+					"Shuttle.Management.Subscriptions"));
 			}
 
 			container.Register(Component.For<IReflectionService>()
-			                            .ImplementedBy<ReflectionService>());
+				.ImplementedBy<ReflectionService>());
 
-			container.Register(Component.For<IDatabaseConnectionCache>()
-			                            .ImplementedBy<ThreadStaticDatabaseConnectionCache>());
-
-			container.Register(Component.For<IDbConnectionConfiguration>()
-			                            .ImplementedBy<DbConnectionConfiguration>());
-
-			container.Register(Component.For<IDbConnectionConfigurationProvider>()
-			                            .ImplementedBy<ManagementDbConnectionConfigurationProvider>());
+			container.Register(Component.For<IDatabaseContextCache>()
+				.ImplementedBy<ThreadStaticDatabaseContextCache>());
 
 			container.Register(Component.For<IDatabaseGateway>().ImplementedBy<DatabaseGateway>());
-			container.Register(Component.For<IDatabaseConnectionFactory>().ImplementedBy<DatabaseConnectionFactory>());
+			container.Register(Component.For<IDatabaseContextFactory>().ImplementedBy<DatabaseContextFactory>());
 			container.Register(Component.For(typeof (IDataRepository<>)).ImplementedBy(typeof (DataRepository<>)));
 
 			container.Register(
@@ -41,7 +35,7 @@ namespace Shuttle.Management.Subscriptions
 					.Pick()
 					.If(type => type.Name.EndsWith("Factory"))
 					.Configure(configurer => configurer.Named(configurer.Implementation.Name.ToLower()))
-					.WithService.Select((type, basetype) => new[] { type.InterfaceMatching(@".*Factory\Z") }));
+					.WithService.Select((type, basetype) => new[] {type.InterfaceMatching(@".*Factory\Z")}));
 
 			container.Register(
 				Classes
@@ -70,9 +64,6 @@ namespace Shuttle.Management.Subscriptions
 					.If(type => type.Name.EndsWith("QueryFactory"))
 					.WithServiceFirstInterface());
 
-
-			((ManagementDbConnectionConfigurationProvider) container.Resolve<IDbConnectionConfigurationProvider>())
-				.AddProvider(new DataStoreDbConnectionConfigurationProvider(managementConfiguration));
 
 			container.Register(
 				Classes

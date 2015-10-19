@@ -35,7 +35,7 @@
     <Framework Condition=" '$(Framework)' == '' ">net35-full</Framework>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Framework)' == 'net35-full'">
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <DefineConstants>$(DefineConstants);NET35FULL</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Framework)' == 'net40-full'">
@@ -54,8 +54,8 @@
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.3\lib\net35-full\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Shuttle.Core.Data, Version=3.1.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\shuttle-core-data.3.1.6\lib\net35-full\Shuttle.Core.Data.dll</HintPath>
+    <Reference Include="Shuttle.Core.Data, Version=3.1.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\shuttle-core-data.3.1.8\lib\net35-full\Shuttle.Core.Data.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Shuttle.Core.Infrastructure">
@@ -83,8 +83,6 @@
     <Compile Include="Configuration\ManagementConfiguration.cs" />
     <Compile Include="Cryptography\CryptographyService.cs" />
     <Compile Include="Cryptography\ICryptographyService.cs" />
-    <Compile Include="DataSourceFactory.cs" />
-    <Compile Include="DataStores\DataStoreDbConnectionConfigurationProvider.cs" />
     <Compile Include="DataStores\DataStorePresenter.cs" />
     <Compile Include="DataStores\DataStoreView.cs">
       <SubType>UserControl</SubType>
@@ -94,7 +92,6 @@
     </Compile>
     <Compile Include="DataStores\IDataStorePresenter.cs" />
     <Compile Include="DataStores\IDataStoreView.cs" />
-    <Compile Include="DataStores\ManagementDbConnectionConfigurationProvider.cs" />
     <Compile Include="DataStores\Repository\DataStore.cs" />
     <Compile Include="DataStores\Repository\IDataStoreRepository.cs" />
     <Compile Include="DataStores\Repository\NullDataStoreRepository.cs" />
