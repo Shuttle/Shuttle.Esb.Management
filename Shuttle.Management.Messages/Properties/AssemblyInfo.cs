@@ -1,9 +1,5 @@
 using System.Reflection;
 
-#if NET35FULL
-[assembly: AssemblyTitle("Shuttle.Management.Messages for .NET Framework 3.5")]
-#endif
-
 #if NET40FULL
 [assembly: AssemblyTitle("Shuttle.Management.Messages for .NET Framework 4.0")]
 #endif
