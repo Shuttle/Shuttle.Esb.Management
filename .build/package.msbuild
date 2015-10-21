@@ -49,13 +49,13 @@
 		<MSBuild
             Projects="$(MSBuildProjectFile)"
             Targets="Build"
-			Properties="Configuration=Debug;Framework=%(Framework.Identity);OutputPath=$(MSBuildProjectDirectory)\deployment\debug\%(Framework.Identity)"
+			Properties="Configuration=Debug;Platform=AnyCPU;Framework=%(Framework.Identity);OutputPath=$(MSBuildProjectDirectory)\deployment\debug\%(Framework.Identity)"
         />
 
 		<MSBuild
             Projects="$(MSBuildProjectFile)"
             Targets="Build"
-			Properties="Configuration=Release;Framework=%(Framework.Identity);OutputPath=$(MSBuildProjectDirectory)\deployment\release\%(Framework.Identity)"
+			Properties="Configuration=Release;Platform=AnyCPU;Framework=%(Framework.Identity);OutputPath=$(MSBuildProjectDirectory)\deployment\release\%(Framework.Identity)"
         />
 	</Target>
 </Project>

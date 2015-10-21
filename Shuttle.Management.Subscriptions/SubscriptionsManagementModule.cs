@@ -9,7 +9,7 @@ namespace Shuttle.Management.Subscriptions
 {
 	public class SubscriptionsManagementModule : IManagementModule
 	{
-		private readonly WindsorContainer container = new WindsorContainer();
+		private readonly WindsorContainer _container = new WindsorContainer();
 
 		public void Configure(IManagementConfiguration managementConfiguration)
 		{
@@ -19,17 +19,17 @@ namespace Shuttle.Management.Subscriptions
 					"Shuttle.Management.Subscriptions"));
 			}
 
-			container.Register(Component.For<IReflectionService>()
+			_container.Register(Component.For<IReflectionService>()
 				.ImplementedBy<ReflectionService>());
 
-			container.Register(Component.For<IDatabaseContextCache>()
+			_container.Register(Component.For<IDatabaseContextCache>()
 				.ImplementedBy<ThreadStaticDatabaseContextCache>());
 
-			container.Register(Component.For<IDatabaseGateway>().ImplementedBy<DatabaseGateway>());
-			container.Register(Component.For<IDatabaseContextFactory>().ImplementedBy<DatabaseContextFactory>());
-			container.Register(Component.For(typeof (IDataRepository<>)).ImplementedBy(typeof (DataRepository<>)));
+			_container.Register(Component.For<IDatabaseGateway>().ImplementedBy<DatabaseGateway>());
+			_container.Register(Component.For<IDatabaseContextFactory>().ImplementedBy<DatabaseContextFactory>());
+			_container.Register(Component.For(typeof (IDataRepository<>)).ImplementedBy(typeof (DataRepository<>)));
 
-			container.Register(
+			_container.Register(
 				Classes
 					.FromAssemblyNamed("Shuttle.Core.Data")
 					.Pick()
@@ -37,27 +37,27 @@ namespace Shuttle.Management.Subscriptions
 					.Configure(configurer => configurer.Named(configurer.Implementation.Name.ToLower()))
 					.WithService.Select((type, basetype) => new[] {type.InterfaceMatching(@".*Factory\Z")}));
 
-			container.Register(
+			_container.Register(
 				Classes
 					.FromThisAssembly()
 					.BasedOn(typeof (IDataRowMapper<>))
 					.WithServiceFirstInterface());
 
-			container.Register(
+			_container.Register(
 				Classes
 					.FromThisAssembly()
 					.Pick()
 					.If(type => type.Name.EndsWith("Repository"))
 					.WithServiceFirstInterface());
 
-			container.Register(
+			_container.Register(
 				Classes
 					.FromThisAssembly()
 					.Pick()
 					.If(type => type.Name.EndsWith("Query"))
 					.WithServiceFirstInterface());
 
-			container.Register(
+			_container.Register(
 				Classes
 					.FromThisAssembly()
 					.Pick()
@@ -65,7 +65,7 @@ namespace Shuttle.Management.Subscriptions
 					.WithServiceFirstInterface());
 
 
-			container.Register(
+			_container.Register(
 				Classes
 					.FromThisAssembly()
 					.BasedOn<IManagementModulePresenter>()
@@ -74,7 +74,7 @@ namespace Shuttle.Management.Subscriptions
 
 		public IEnumerable<IManagementModulePresenter> Presenters
 		{
-			get { return container.ResolveAll<IManagementModulePresenter>(); }
+			get { return _container.ResolveAll<IManagementModulePresenter>(); }
 		}
 	}
 }
