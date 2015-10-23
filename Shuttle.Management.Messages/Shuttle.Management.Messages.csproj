@@ -72,24 +72,24 @@
       <HintPath>..\packages\shuttle-core-infrastructure-log4net.3.2.0\lib\net40-full\Shuttle.Core.Infrastructure.Log4Net.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Shuttle.ESB.Core, Version=3.7.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\shuttle-esb-core.3.7.1\lib\net40-full\Shuttle.ESB.Core.dll</HintPath>
+    <Reference Include="Shuttle.ESB.Core, Version=3.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\shuttle-esb-core.3.8.0\lib\net40-full\Shuttle.ESB.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Shuttle.ESB.FileMQ, Version=3.5.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\shuttle-esb-filemq.3.5.1\lib\net40-full\Shuttle.ESB.FileMQ.dll</HintPath>
+    <Reference Include="Shuttle.ESB.FileMQ, Version=3.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\shuttle-esb-filemq.3.6.0\lib\net40-full\Shuttle.ESB.FileMQ.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Shuttle.ESB.Msmq, Version=3.5.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\shuttle-esb-msmq.3.5.1\lib\net40-full\Shuttle.ESB.Msmq.dll</HintPath>
+    <Reference Include="Shuttle.ESB.Msmq, Version=3.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\shuttle-esb-msmq.3.6.0\lib\net40-full\Shuttle.ESB.Msmq.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Shuttle.ESB.RabbitMQ, Version=3.6.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\shuttle-esb-rabbitmq.3.6.1\lib\net40-full\Shuttle.ESB.RabbitMQ.dll</HintPath>
+    <Reference Include="Shuttle.ESB.RabbitMQ, Version=3.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\shuttle-esb-rabbitmq.3.7.0\lib\net40-full\Shuttle.ESB.RabbitMQ.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Shuttle.ESB.SqlServer, Version=3.5.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\shuttle-esb-sqlserver.3.5.1\lib\net40-full\Shuttle.ESB.SqlServer.dll</HintPath>
+    <Reference Include="Shuttle.ESB.SqlServer, Version=3.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\shuttle-esb-sqlserver.3.6.0\lib\net40-full\Shuttle.ESB.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
