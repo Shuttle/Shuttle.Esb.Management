@@ -1,7 +1,5 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shuttle.Management.Messages", "Shuttle.Management.Messages\Shuttle.Management.Messages.csproj", "{734B5BF0-68DC-4BF5-97FD-591964C7DB6E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shuttle.Management", "Shuttle.Management\Shuttle.Management.csproj", "{F0408EED-8E48-4256-9073-5BFAAE19A7A1}"
@@ -21,7 +19,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{89066D
 	ProjectSection(SolutionItems) = preProject
 		.build\app.config = .build\app.config
 		.build\package.msbuild = .build\package.msbuild
-		.build\package.nuspec = .build\package.nuspec
 		.build\Shuttle.Core.MSBuild.dll = .build\Shuttle.Core.MSBuild.dll
 		.build\Shuttle.Core.MSBuild.targets = .build\Shuttle.Core.MSBuild.targets
 	EndProjectSection

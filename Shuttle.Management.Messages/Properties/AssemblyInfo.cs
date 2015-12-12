@@ -12,5 +12,5 @@ using System.Reflection;
 [assembly: AssemblyTitle("Shuttle.Management.Messages for .NET Framework 4.5.1")]
 #endif
 
-[assembly: AssemblyVersion("3.0.2.0")]
+[assembly: AssemblyVersion("3.1.0.0")]
 

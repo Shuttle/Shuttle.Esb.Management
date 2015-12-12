@@ -1,61 +1,64 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Deploy" ToolsVersion="4.0">
-	<Import Project="Shuttle.Core.MSBuild.targets" />
+  <Import Project="Shuttle.Core.MSBuild.targets" />
 
-	<ItemGroup>
-		<Framework Include="net40-full;net45-full;net451-full" />
-		<ProjectReference Include="..\Shuttle.Management\Shuttle.Management.csproj" />
-		<ProjectReference Include="..\Shuttle.Management.Shell\Shuttle.Management.Shell.csproj" />
-		<ProjectReference Include="..\Shuttle.Management.Messages\Shuttle.Management.Messages.csproj" />
-		<ProjectReference Include="..\Shuttle.Management.Subscriptions\Shuttle.Management.Subscriptions.csproj" />
+  <ItemGroup>
+    <Framework Include="net40-full;net45-full;net451-full" />
+    <ProjectReference Include="..\Shuttle.Management\Shuttle.Management.csproj" />
+    <ProjectReference Include="..\Shuttle.Management.Shell\Shuttle.Management.Shell.csproj" />
+    <ProjectReference Include="..\Shuttle.Management.Messages\Shuttle.Management.Messages.csproj" />
+    <ProjectReference Include="..\Shuttle.Management.Subscriptions\Shuttle.Management.Subscriptions.csproj" />
 
-		<DatabaseScript Include="..\Shuttle.Management.Shell\**\*.sql" />
-	</ItemGroup>
+    <DatabaseScript Include="..\Shuttle.Management.Shell\**\*.sql" />
+  </ItemGroup>
 
-	<Target Name="Build">
-		<MSBuild Projects="@(ProjectReference)" Targets="Rebuild"/>
+  <Target Name="Build">
+    <MSBuild Projects="@(ProjectReference)" Targets="Rebuild"/>
 
-		<ItemGroup>
-			<RemoveFiles Include="$(OutputPath)\*.xml;$(OutputPath)\*.config" />
-		</ItemGroup>
+    <ItemGroup>
+      <RemoveFiles Include="$(OutputPath)\*.xml;$(OutputPath)\*.config" />
+    </ItemGroup>
 
-		<Delete Files="@(RemoveFiles)" />
-		<Copy SourceFiles="@(DatabaseScript)" DestinationFolder="$(OutputPath)\database\" SkipUnchangedFiles="false" />
-		<Copy SourceFiles="app.config" DestinationFiles="$(OutputPath)\Shuttle.Management.exe.config" SkipUnchangedFiles="false" />
+    <Delete Files="@(RemoveFiles)" />
+    <Copy SourceFiles="@(DatabaseScript)" DestinationFolder="$(OutputPath)\database\" SkipUnchangedFiles="false" />
+    <Copy SourceFiles="app.config" DestinationFiles="$(OutputPath)\Shuttle.Management.exe.config" SkipUnchangedFiles="false" />
 
-		<ItemGroup>
-			<ZipFiles Include="$(OutputPath)\**\*.*" />
-		</ItemGroup>
+    <ItemGroup>
+      <ZipFiles Include="$(OutputPath)\**\*.*" />
+    </ItemGroup>
 
-		<Zip 
+    <Zip
 			Files="@(ZipFiles)"
 			RelativeFolder="$(OutputPath)"
 			ZipFilePath="$(MSBuildProjectDirectory)\deployment\$(Configuration)\shuttle-management-%(Framework.Identity).zip" />
-	</Target>
+  </Target>
 
-	<Target Name="Deploy">
-		<Prompt Text="Enter semantic version:" Condition="$(SemanticVersion) == ''">
-			<Output TaskParameter="UserInput" PropertyName="SemanticVersion" />
-		</Prompt>
+  <Target Name="Deploy">
+    <Prompt Text="Enter semantic version:" Condition="$(SemanticVersion) == ''">
+      <Output TaskParameter="UserInput" PropertyName="SemanticVersion" />
+    </Prompt>
 
-		<Error Text="Please enter a version number." Condition="$(SemanticVersion) == ''" />
+    <Error Text="Please enter a version number." Condition="$(SemanticVersion) == ''" />
 
-		<ItemGroup>
-			<AssemblyInfoFiles Include="..\**\*AssemblyInfo.cs" Exclude="..\*.Tests\**\*AssemblyInfo.cs"/>
-		</ItemGroup>
+    <ItemGroup>
+      <AssemblyInfoFiles Include="..\**\*AssemblyInfo.cs" Exclude="..\*.Tests\**\*AssemblyInfo.cs"/>
+    </ItemGroup>
 
-		<RegexFindAndReplace Files="@(AssemblyInfoFiles)" FindExpression="AssemblyInformationalVersion\s*\(\s*&quot;.*&quot;\s*\)" ReplacementText="AssemblyInformationalVersion(&quot;$(SemanticVersion)&quot;)" />
-		<RegexFindAndReplace Files="@(AssemblyInfoFiles)" FindExpression="AssemblyVersion\s*\(\s*&quot;.*&quot;\s*\)" ReplacementText="AssemblyVersion(&quot;$(SemanticVersion).0&quot;)" />
+    <RegexFindAndReplace Files="@(AssemblyInfoFiles)" FindExpression="AssemblyInformationalVersion\s*\(\s*&quot;.*&quot;\s*\)" ReplacementText="AssemblyInformationalVersion(&quot;$(SemanticVersion)&quot;)" />
+    <RegexFindAndReplace Files="@(AssemblyInfoFiles)" FindExpression="AssemblyVersion\s*\(\s*&quot;.*&quot;\s*\)" ReplacementText="AssemblyVersion(&quot;$(SemanticVersion).0&quot;)" />
 
-		<MSBuild
+    <MSBuild
             Projects="$(MSBuildProjectFile)"
             Targets="Build"
 			Properties="Configuration=Debug;Platform=AnyCPU;Framework=%(Framework.Identity);OutputPath=$(MSBuildProjectDirectory)\deployment\debug\%(Framework.Identity)"
-        />
+    />
 
-		<MSBuild
+    <MSBuild
             Projects="$(MSBuildProjectFile)"
             Targets="Build"
 			Properties="Configuration=Release;Platform=AnyCPU;Framework=%(Framework.Identity);OutputPath=$(MSBuildProjectDirectory)\deployment\release\%(Framework.Identity)"
-        />
-	</Target>
+    />
+
+    <Exec Command="git commit -a -m &quot;- v$(SemanticVersion)&quot;" />
+    <Exec Command="git push" />
+  </Target>
 </Project>
