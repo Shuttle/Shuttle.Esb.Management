@@ -15,8 +15,6 @@ namespace Shuttle.Management
 		[STAThread]
 		private static void Main()
 		{
-			XmlConfigurator.Configure();
-
 			Log.Assign(new Log4NetLog(LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType)));
 
 			Application.ThreadException += ThreadException;

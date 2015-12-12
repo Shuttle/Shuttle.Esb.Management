@@ -60,7 +60,14 @@ namespace Shuttle.Management.Shell
 				{
 					_log.Information(string.Format(ManagementResources.RunningTask, task.Name));
 
-					ExceptionWrapper(task.Action);
+                    try
+                    {
+                        task.Action.Invoke();
+                    }
+                    catch (Exception exception)
+                    {
+                        _log.Error(exception.AllMessages());
+                    }
 
 					_log.Information(string.Format(ManagementResources.TaskCompleted, task.Name));
 				}
@@ -69,18 +76,6 @@ namespace Shuttle.Management.Shell
 				{
 					ThreadSleep.While(250, this);
 				}
-			}
-		}
-
-		private void ExceptionWrapper(Action action)
-		{
-			try
-			{
-				action.Invoke();
-			}
-			catch (Exception exception)
-			{
-				_log.Error(exception.AllMessages());
 			}
 		}
 

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Shuttle.ESB.Core;
 using Shuttle.Management.Shell;
@@ -9,8 +8,12 @@ namespace Shuttle.Management.Messages
     {
         string SourceQueueUriValue { get; set; }
         string DestinationQueueUriValue { get; set; }
-	    void PopulateQueues(IEnumerable<Queue> queues);
-	    void ShowMessage(TransportMessage transportMessage, object message);
-    	void ClearMessageView();
+        List<MessageManagementPresenter.ReceivedMessageItem> GetCheckedMessages();
+        void PopulateQueues(IEnumerable<Queue> queues);
+        void ShowMessage(TransportMessage transportMessage, object message);
+        void ClearMessageView();
+        void AddReceivedMessageItem(MessageManagementPresenter.ReceivedMessageItem receivedMessageItem);
+        void RemoveCheckedItems();
+        void RemoveAllItems();
     }
 }
