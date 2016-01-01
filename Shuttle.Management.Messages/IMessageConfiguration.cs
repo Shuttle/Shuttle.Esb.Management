@@ -1,4 +1,4 @@
-using Shuttle.ESB.Core;
+using Shuttle.Core.Infrastructure;
 
 namespace Shuttle.Management.Messages
 {
