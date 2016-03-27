@@ -3,12 +3,12 @@
 
 	<ItemGroup>
 		<Framework Include="net40-full;net45-full;net451-full;net452-full;net46-full;net461-full" />
-		<ProjectReference Include="..\Shuttle.Management\Shuttle.Management.csproj" />
-		<ProjectReference Include="..\Shuttle.Management.Shell\Shuttle.Management.Shell.csproj" />
-		<ProjectReference Include="..\Shuttle.Management.Messages\Shuttle.Management.Messages.csproj" />
-		<ProjectReference Include="..\Shuttle.Management.Subscriptions\Shuttle.Management.Subscriptions.csproj" />
+		<ProjectReference Include="..\Shuttle.Esb.Management\Shuttle.Esb.Management.csproj" />
+		<ProjectReference Include="..\Shuttle.Esb.Management.Shell\Shuttle.Esb.Management.Shell.csproj" />
+		<ProjectReference Include="..\Shuttle.Esb.Management.Messages\Shuttle.Esb.Management.Messages.csproj" />
+		<ProjectReference Include="..\Shuttle.Esb.Management.Subscriptions\Shuttle.Esb.Management.Subscriptions.csproj" />
 
-		<DatabaseScript Include="..\Shuttle.Management.Shell\**\*.sql" />
+		<DatabaseScript Include="..\Shuttle.Esb.Management.Shell\**\*.sql" />
 	</ItemGroup>
 
 	<Target Name="Build">
@@ -34,7 +34,7 @@
 
 		<Delete Files="@(RemoveFiles)" />
 		<Copy SourceFiles="@(DatabaseScript)" DestinationFolder="$(OutputPath)\database\" SkipUnchangedFiles="false" />
-		<Copy SourceFiles="app.config" DestinationFiles="$(OutputPath)\Shuttle.Management.exe.config"
+		<Copy SourceFiles="app.config" DestinationFiles="$(OutputPath)\Shuttle.Esb.Management.exe.config"
 		      SkipUnchangedFiles="false" />
 
 		<ItemGroup>
@@ -44,7 +44,7 @@
 		<Zip
 			Files="@(ZipFiles)"
 			RelativeFolder="$(OutputPath)"
-			ZipFilePath="$(MSBuildProjectDirectory)\deployment\$(Configuration)\shuttle-management-%(Framework.Identity).zip" />
+			ZipFilePath="$(MSBuildProjectDirectory)\deployment\$(Configuration)\Shuttle.Esb.Management-%(Framework.Identity).zip" />
 	</Target>
 
 	<Target Name="Deploy" DependsOnTargets="Build">

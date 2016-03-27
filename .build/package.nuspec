@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <package >
 	<metadata>
-		<id>shuttle-management</id>
+		<id>Shuttle.Esb.Management</id>
 		<version>{semver}</version>
 		<authors>Eben Roux</authors>
 		<owners>Eben Roux</owners>
-		<licenseUrl>https://github.com/shuttle/shuttle-management/raw/master/LICENSE</licenseUrl>
-		<projectUrl>https://github.com/shuttle/shuttle-management</projectUrl>
-		<iconUrl>https://raw.githubusercontent.com/Shuttle/shuttle-management/master/.media/logo.png</iconUrl>
+		<licenseUrl>https://github.com/shuttle/Shuttle.Esb.Management/raw/master/LICENSE</licenseUrl>
+		<projectUrl>https://github.com/shuttle/Shuttle.Esb.Management</projectUrl>
+		<iconUrl>https://raw.githubusercontent.com/Shuttle/Shuttle.Esb.Management/master/.media/logo.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description></description>
 		<releaseNotes/>
