@@ -15,17 +15,17 @@
 		<MSBuild
 			Projects="$(MSBuildProjectFile)"
 			Targets="BuildConfiguration"
-			Properties="Configuration=Release;Platform=AnyCPU;Framework=%(Framework.Identity);OutputPath=$(MSBuildProjectDirectory)\deployment\release\%(Framework.Identity)" />
+			Properties="Configuration=Debug;Platform=AnyCPU;Framework=%(Framework.Identity);OutputPath=$(MSBuildProjectDirectory)\deployment\debug\%(Framework.Identity)" />
 
 		<MSBuild
 			Projects="$(MSBuildProjectFile)"
 			Targets="BuildConfiguration"
-			Properties="Configuration=Release;Platform=AnyCPU;Framework=%(Framework.Identity);OutputPath=$(MSBuildProjectDirectory)\deployment\debug\%(Framework.Identity)" />
+			Properties="Configuration=Release;Platform=AnyCPU;Framework=%(Framework.Identity);OutputPath=$(MSBuildProjectDirectory)\deployment\release\%(Framework.Identity)" />
 	</Target>
 
 	<Target Name="BuildConfiguration">
 		<MSBuild
-			Projects="$(ProjectReference)"
+			Projects="@(ProjectReference)"
 			Targets="Rebuild" />
 
 		<ItemGroup>
