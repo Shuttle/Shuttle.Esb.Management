@@ -110,7 +110,7 @@ namespace Shuttle.Esb.Management.Messages
                     {
                         var destination = _queueManager.GetQueue(destinationQueueUriValue);
 
-                        destination.Enqueue(receivedMessageItem.TransportMessage.MessageId,
+                        destination.Enqueue(receivedMessageItem.TransportMessage,
                             receivedMessageItem.ReceivedMessage.Stream);
                         receivedMessageItem.Queue.Acknowledge(receivedMessageItem.ReceivedMessage.AcknowledgementToken);
 
@@ -164,7 +164,7 @@ namespace Shuttle.Esb.Management.Messages
                             (TransportMessage)
                                 _serializer.Deserialize(typeof(TransportMessage), receivedMessage.Stream);
 
-                        destination.Enqueue(transportMessage.MessageId, receivedMessage.Stream);
+                        destination.Enqueue(transportMessage, receivedMessage.Stream);
                         source.Acknowledge(receivedMessage.AcknowledgementToken);
 
                         totalMessagesMoved++;
@@ -200,7 +200,7 @@ namespace Shuttle.Esb.Management.Messages
                     foreach (var receivedMessageItem in _view.GetCheckedMessages())
                     {
                         _queueManager.GetQueue(destinationQueueUriValue)
-                            .Enqueue(receivedMessageItem.TransportMessage.MessageId,
+                            .Enqueue(receivedMessageItem.TransportMessage,
                                 receivedMessageItem.ReceivedMessage.Stream);
 
                         _log.Information(string.Format(MessageResources.EnqueuedMessage,
@@ -265,7 +265,7 @@ namespace Shuttle.Esb.Management.Messages
                                 startMessageId = transportMessage.MessageId;
                             }
 
-                            destination.Enqueue(transportMessage.MessageId, receivedMessage.Stream);
+                            destination.Enqueue(transportMessage, receivedMessage.Stream);
                             source.Release(receivedMessage.AcknowledgementToken);
 
                             totalMessagesCopied++;
@@ -302,7 +302,7 @@ namespace Shuttle.Esb.Management.Messages
                         receivedMessageItem.TransportMessage.StopIgnoring();
                         receivedMessageItem.TransportMessage.FailureMessages.Clear();
 
-                        destination.Enqueue(receivedMessageItem.TransportMessage.MessageId,
+                        destination.Enqueue(receivedMessageItem.TransportMessage,
                             _serializer.Serialize(receivedMessageItem.TransportMessage));
                         receivedMessageItem.Queue.Acknowledge(receivedMessageItem.ReceivedMessage.AcknowledgementToken);
 
@@ -356,7 +356,7 @@ namespace Shuttle.Esb.Management.Messages
 
                         var destination = _queueManager.GetQueue(transportMessage.RecipientInboxWorkQueueUri);
 
-                        destination.Enqueue(transportMessage.MessageId, receivedMessage.Stream);
+                        destination.Enqueue(transportMessage, receivedMessage.Stream);
                         source.Acknowledge(receivedMessage.AcknowledgementToken);
 
                         totalMessagesReturned++;
@@ -482,7 +482,7 @@ namespace Shuttle.Esb.Management.Messages
                     {
                         receivedMessageItem.TransportMessage.StopIgnoring();
 
-                        receivedMessageItem.Queue.Enqueue(receivedMessageItem.TransportMessage.MessageId,
+                        receivedMessageItem.Queue.Enqueue(receivedMessageItem.TransportMessage,
                             _serializer.Serialize(receivedMessageItem.TransportMessage));
                         receivedMessageItem.Queue.Acknowledge(receivedMessageItem.ReceivedMessage.AcknowledgementToken);
                     }
