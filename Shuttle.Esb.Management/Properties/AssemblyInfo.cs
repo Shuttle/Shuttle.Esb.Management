@@ -24,5 +24,5 @@ using System.Reflection;
 [assembly: AssemblyTitle("Shuttle.Esb.Management for .NET Framework 4.6.1")]
 #endif
 
-[assembly: AssemblyVersion("3.1.1.0")]
+[assembly: AssemblyVersion("3.1.2.0")]
 
